@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import { HtmlMain } from "@/components/HtmlMain";
 import { SiteShell } from "@/components/SiteShell";
-import { home } from "@/content";
+import { privacy } from "@/content";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  ...home.meta,
-  canonical: "https://www.trooba.com/",
-  ogUrl: "https://www.trooba.com/",
+  ...privacy.meta,
+  canonical: "https://www.trooba.com/privacy",
+  ogUrl: "https://www.trooba.com/privacy",
 });
 
-export default function HomePage() {
+export default function PrivacyPage() {
   return (
     <SiteShell>
-      <HtmlMain html={home.mainHtml} />
+      <HtmlMain html={privacy.mainHtml} />
     </SiteShell>
   );
 }

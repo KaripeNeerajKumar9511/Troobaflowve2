@@ -1,0 +1,563 @@
+/* ============================================================================
+   TROOBA — DESIGN TOKENS
+   Design System v2.5 · 2026 · STATUS: FROZEN
+
+   "Complexity belongs in the system, not in the interface."
+   "Every visible element must earn its place."
+
+   This system is frozen. Change it only for a demonstrated usability problem,
+   an accessibility issue, a brand-consistency issue, a technical defect, or a
+   validated product requirement. Aesthetic preference is not sufficient.
+
+   STRUCTURE — three layers. Respect the boundary between them.
+
+     LAYER 1  --brand-* / --palette-*   Brand and palette primitives.
+                                        NEVER referenced by a component.
+     LAYER 2  semantic                  What a colour MEANS in the interface
+                                        (--surface-primary, --text-secondary,
+                                        --action-primary, --status-critical).
+                                        Components use only these.
+     LAYER 3  --ui-*                    Component tokens. Only where the
+                                        semantic layer cannot express it.
+
+   The point of the split: brand colour identifies Trooba; semantic tokens
+   run the interface. A future Trooba product changes Layer 1 and inherits
+   the entire system without redesign.
+
+   THEMING — light is the default (:root). Dark is [data-theme="dark"].
+   Both are complete definitions; neither is an override of the other.
+   ============================================================================ */
+
+/* ============================================================================
+   LAYER 1 — BRAND PRIMITIVES
+   ============================================================================ */
+:root {
+
+  /* ── Trooba teal ─────────────────────────────────────────────────────────
+     --brand-teal is the identity colour and is used in the logo exactly as
+     specified in the brand guidelines. --brand-teal-ui-light is the
+     contrast-corrected value the light interface uses for text and controls;
+     the canonical logo value on light backgrounds remains #009A8E. */
+  --brand-teal:            #00C4B4;   /* canonical · dark backgrounds  */
+  --brand-teal-light:      #009A8E;   /* canonical · light backgrounds (logo) */
+  --brand-teal-hover:      #2FD3C5;
+  --brand-teal-ui-light:   #00796F;   /* light UI text/controls: ≈4.9:1 on canvas, white on it ≈5.3:1 */
+  --brand-teal-ui-light-hover: #006158;
+
+  /* ── Brand neutrals ──────────────────────────────────────────────────────*/
+  --brand-ink:        #0C0F14;   /* canonical dark base   */
+  --brand-off-white:  #E8EDF2;   /* canonical light ink   */
+
+  /* ── Product-family identity ─────────────────────────────────────────────
+     IDENTITY tokens. Legal use: product marks, product switcher, marketing.
+     Never as chart series, status, tags, or surface fills. */
+  --brand-product-flow:  #00C4B4;
+  --brand-product-plan:  #F59E0B;
+  --brand-product-ai:    #7C6FFF;
+  --brand-product-twin:  #22C55E;
+  --brand-product-flow-light: #009A8E;
+  --brand-product-plan-light: #B26A00;
+  --brand-product-ai-light:   #5B4DE0;
+  --brand-product-twin-light: #14804A;
+
+  /* ── Graphite ramp — dark interface neutrals ─────────────────────────────
+     Cool-neutral, not blue. The blue #1E3A5F surface is retired. */
+  --palette-graphite-950:  #0C0F14;
+  --palette-graphite-900:  #14181D;
+  --palette-graphite-850:  #1B2027;
+  --palette-graphite-800:  #232830;
+  --palette-graphite-750:  #2A303A;
+  --palette-graphite-700:  #39404A;
+  --palette-graphite-500:  #6C7681;
+  --palette-graphite-400:  #8A94A0;   /* tertiary text ≈6.2:1 */
+  --palette-graphite-300:  #A3AEBA;   /* secondary text ≈8.5:1 */
+  --palette-graphite-100:  #E8EDF2;   /* primary text ≈16.3:1 */
+
+  /* ── Paper ramp — light interface neutrals ───────────────────────────────*/
+  --palette-paper-0:    #FFFFFF;
+  --palette-paper-50:   #F6F6F4;
+  --palette-paper-100:  #EFEFEC;
+  --palette-paper-200:  #E4E4E0;
+  --palette-paper-300:  #D3D4CF;
+  --palette-paper-600:  #646C76;
+  --palette-paper-700:  #545C66;
+  --palette-paper-900:  #12161B;   /* primary text ≈16.8:1 */
+
+  /* ── Status ramp ─────────────────────────────────────────────────────────
+     Deliberately distinct from the product-family hues. There is no
+     "healthy green" default: healthy is neutral. */
+  --palette-critical-dark:  #FF6B5A;
+  --palette-critical-light: #C0392B;
+  --palette-warning-dark:   #E3A93C;
+  --palette-warning-light:  #8A6100;
+  --palette-success-dark:   #3ECF8E;
+  --palette-success-light:  #14764A;
+}
+
+/* ============================================================================
+   LAYER 1b — NON-COLOUR SCALES (theme-invariant)
+   ============================================================================ */
+:root {
+
+  --font-sans: 'DM Sans', 'Neue Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Weight. 600 is the interface ceiling. 700 exists for the wordmark only,
+     which ships as outlined paths — the UI never loads it. */
+  --fw-regular:   400;
+  --fw-medium:    500;
+  --fw-semibold:  600;
+  --fw-wordmark:  700;   /* logo only */
+
+  /* Type scale — nothing below 12px */
+  --fs-display:  44px;   --lh-display: 1.06;
+  --fs-h1:       32px;   --lh-h1:      1.12;
+  --fs-h2:       24px;   --lh-h2:      1.20;
+  --fs-h3:       19px;   --lh-h3:      1.32;
+  --fs-body-lg:  17px;   --lh-body-lg: 1.55;
+  --fs-body:     15px;   --lh-body:    1.55;
+  --fs-sm:       14px;   --lh-sm:      1.45;
+  --fs-meta:     13px;   --lh-meta:    1.40;
+  --fs-micro:    12px;   --lh-micro:   1.35;
+
+  /* Measured values, set in DM Mono */
+  --fs-value-lg: 32px;
+  --fs-value:    15px;
+  --fs-value-sm: 13px;
+
+  /* Tracking */
+  --tracking-display:   -0.02em;
+  --tracking-heading:   -0.01em;
+  --tracking-normal:     0em;
+  --tracking-label:      0.06em;   /* small all-caps UI labels */
+  --tracking-data:       0em;      /* never track measured values */
+  --tracking-wordmark:  -0.0094em; /* canonical: -0.3px at 32px */
+
+  /* Space — 4px base */
+  --space-0:   0px;   --space-1:  4px;   --space-2:  8px;   --space-3: 12px;
+  --space-4:  16px;   --space-5: 20px;   --space-6: 24px;   --space-8: 32px;
+  --space-10: 40px;   --space-14:56px;   --space-18:72px;   --space-24:96px;
+
+  /* Radius — four values. Nothing else is legal. */
+  --radius-control: 6px;    /* buttons, inputs, chips, checkboxes  */
+  --radius-surface: 10px;   /* cards, popovers, tiles              */
+  --radius-panel:   14px;   /* full-height panels, modals, drawers */
+  --radius-pill:    999px;  /* only where the shape carries meaning */
+
+  --border-width:      1px;
+  --border-width-emphasis: 2px;
+
+  /* Motion — explains change; does not entertain */
+  --motion-fast:  120ms;
+  --motion-base:  180ms;
+  --motion-slow:  260ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-fast: 1ms; --motion-base: 1ms; --motion-slow: 1ms; }
+}
+
+/* ============================================================================
+   LAYER 2 — SEMANTIC · LIGHT (default)
+   A first-class interface, not a dark-mode inversion.
+   ============================================================================ */
+:root {
+  color-scheme: light;
+
+  /* Surfaces — three levels, each visually distinct in this theme.
+       primary    page canvas
+       secondary  raised and interactive: panels, FORM INPUTS and fields,
+                  overlays (with --shadow-overlay), secondary functional
+                  surfaces
+       tertiary   recessed background regions: wells, grouped analysis
+                  regions, table headers, recessed data areas
+     Inputs always use --surface-secondary, in both themes. Hover, pressed and
+     selection are STATE tints laid over whichever surface is underneath, not
+     extra surface levels. */
+  --surface-primary:    var(--palette-paper-50);    /* page canvas          */
+  --surface-secondary:  var(--palette-paper-0);     /* raised + inputs      */
+  --surface-tertiary:   var(--palette-paper-100);   /* recessed background  */
+  --state-hover:        rgba(18, 22, 27, 0.045);
+  --state-pressed:      rgba(18, 22, 27, 0.085);
+  --state-selected:     rgba(0, 121, 111, 0.07);
+  --surface-scrim:      rgba(18, 22, 27, 0.28);
+
+  /* Text */
+  --text-primary:     var(--palette-paper-900);
+  --text-secondary:   var(--palette-paper-700);
+  --text-tertiary:    var(--palette-paper-600);
+  --text-accent:      var(--brand-teal-ui-light);
+  --text-on-action:   var(--palette-paper-0);
+  --text-inverse:     var(--palette-paper-0);
+
+  /* Borders — the layout must still parse with all of these removed */
+  --border-subtle:      var(--palette-paper-200);   /* separators, quiet structure */
+  --border-default:     var(--palette-paper-300);   /* visible container borders   */
+  /* Interaction affordance. Stronger than --border-subtle, used ONLY on things
+     the user can type in or click: text fields, selects, comboboxes, secondary
+     buttons. ≈3.6:1 on white, ≈3.3:1 on the canvas — clears the 3:1 threshold
+     for non-text UI components, which matters on a bright shop floor. Do not
+     use it for separators or layout. */
+  --border-interactive: #86887F;
+
+  /* Action */
+  --action-primary:        var(--brand-teal-ui-light);
+  --action-primary-hover:  var(--brand-teal-ui-light-hover);
+  --action-primary-text:   var(--palette-paper-0);
+  --action-quiet:          rgba(0, 121, 111, 0.10);
+  --accent-rule:           var(--brand-teal-ui-light);
+
+  /* Status */
+  --status-critical:        var(--palette-critical-light);
+  --status-critical-quiet:  rgba(192, 57, 43, 0.09);
+  --status-warning:         var(--palette-warning-light);
+  --status-warning-quiet:   rgba(138, 97, 0, 0.10);
+  --status-success:         var(--palette-success-light);
+
+  /* Data visualisation — one accent, then greys. Not a rainbow. */
+  --chart-primary:    var(--brand-teal-ui-light);
+  --chart-neutral-1:  #9AA0A6;
+  --chart-neutral-2:  #C2C6C9;
+  --chart-neutral-3:  #DFE1E0;
+  --chart-critical:   var(--palette-critical-light);
+  --chart-grid:       var(--palette-paper-200);
+  --chart-axis:       var(--palette-paper-600);
+  --chart-reference:  var(--palette-paper-300);
+
+  /* Elevation — one shadow, for content that genuinely floats */
+  --shadow-overlay: 0 6px 20px -6px rgba(18, 22, 27, 0.14),
+                    0 1px 2px rgba(18, 22, 27, 0.06);
+
+  --focus-ring: 0 0 0 2px var(--surface-primary), 0 0 0 4px var(--action-primary);
+}
+
+/* ============================================================================
+   LAYER 2 — SEMANTIC · DARK
+   ============================================================================ */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* In dark, a recessed surface reads as slightly lighter than the canvas —
+     a well darker than #0C0F14 would simply disappear. Inputs use
+     --surface-secondary here too. */
+  --surface-primary:    var(--palette-graphite-950);  /* page canvas          */
+  --surface-secondary:  var(--palette-graphite-900);  /* raised + inputs      */
+  --surface-tertiary:   var(--palette-graphite-850);  /* recessed background  */
+  --state-hover:        rgba(232, 237, 242, 0.055);
+  --state-pressed:      rgba(232, 237, 242, 0.095);
+  --state-selected:     rgba(0, 196, 180, 0.10);
+  --surface-scrim:      rgba(4, 6, 9, 0.60);
+
+  --text-primary:     var(--palette-graphite-100);
+  --text-secondary:   var(--palette-graphite-300);
+  --text-tertiary:    var(--palette-graphite-400);
+  --text-accent:      var(--brand-teal);
+  --text-on-action:   #04211E;   /* ≈7.7:1 on teal fill */
+  --text-inverse:     var(--palette-graphite-950);
+
+  --border-subtle:      var(--palette-graphite-750);
+  --border-default:     var(--palette-graphite-700);
+  /* ≈3.1:1 on the raised surface, ≈3.3:1 on the canvas. */
+  --border-interactive: #5C6674;
+
+  --action-primary:        var(--brand-teal);
+  --action-primary-hover:  var(--brand-teal-hover);
+  --action-primary-text:   #04211E;
+  --action-quiet:          rgba(0, 196, 180, 0.12);
+  --accent-rule:           var(--brand-teal);
+
+  --status-critical:        var(--palette-critical-dark);
+  --status-critical-quiet:  rgba(255, 107, 90, 0.12);
+  --status-warning:         var(--palette-warning-dark);
+  --status-warning-quiet:   rgba(227, 169, 60, 0.12);
+  --status-success:         var(--palette-success-dark);
+
+  --chart-primary:    var(--brand-teal);
+  --chart-neutral-1:  #7C8794;
+  --chart-neutral-2:  #4E5865;
+  --chart-neutral-3:  #313945;
+  --chart-critical:   var(--palette-critical-dark);
+  --chart-grid:       var(--palette-graphite-800);
+  --chart-axis:       var(--palette-graphite-400);
+  --chart-reference:  var(--palette-graphite-700);
+
+  --shadow-overlay: 0 8px 24px -8px rgba(0, 0, 0, 0.55);
+
+  --focus-ring: 0 0 0 2px var(--surface-primary), 0 0 0 4px var(--action-primary);
+}
+
+/* ============================================================================
+   LAYER 3 — COMPONENT TOKENS
+   ============================================================================ */
+:root {
+  /* ── Interaction density ────────────────────────────────────────────────
+     Two modes, and the difference is real control size — NOT an invisible hit
+     area laid over a small control. Overlapping phantom targets cause mis-hits
+     on exactly the dense screens that need precision.
+
+       COMFORTABLE (default)  --ui-target-min 44px. Navigation, primary actions,
+                              forms, settings, anything touch-capable.
+       DENSE ([data-density="compact"])  --ui-target-min 32px. Deliberate, and
+                              only for manufacturing tables, routing grids and
+                              analytical screens. Requires: no overlapping
+                              targets, ≥4px between adjacent hit areas, working
+                              keyboard navigation, a visible focus ring, and
+                              labels at or above 12px.
+     Extra target area comes from a control's own padding, never from a pseudo-
+     element that reaches outside its box. */
+  --ui-target-min:         44px;
+  --ui-target-gap:         4px;   /* minimum clear space between hit areas */
+  --ui-control-height-sm:  36px;
+  --ui-control-height:     40px;
+  --ui-control-height-lg:  44px;
+  --ui-control-padding-x:  var(--space-4);
+
+  --ui-nav-width:          232px;
+  --ui-nav-item-height:    40px;
+  --ui-topbar-height:      56px;
+  --ui-table-row-height:   44px;
+
+  --ui-panel-padding:      var(--space-6);
+  --ui-page-gutter:        var(--space-8);
+
+  /* ── Content width — two layout categories ──────────────────────────────
+     NARRATIVE: settings, onboarding, forms, explanatory content, AI
+     recommendations, documentation. Reading comfort governs.
+     ANALYTICAL: factory models, bottleneck analysis, scenario comparison,
+     what-if, tables, charts, routing and scheduling views. These take the
+     available viewport width and keep their gutters. Do not force factory
+     analysis into a narrow column in the name of minimalism. */
+  --ui-content-narrative:  880px;
+  --ui-content-analytical: 100%;
+  --ui-content-ultrawide:  2200px;   /* sanity cap on very wide displays */
+
+  --ui-divider:            var(--border-width) solid var(--border-subtle);
+
+  /* Logo clear space = cap-height of the wordmark, on all four sides */
+  --ui-logo-clearspace-ratio: 1;
+}
+
+/* Compact — dense desktop workflows: large tables, routing grids, model editors.
+   Opt-in per container, never the application default. */
+[data-density="compact"] {
+  --ui-target-min:         32px;
+  --ui-control-height-sm:  32px;
+  --ui-control-height:     36px;
+  --ui-control-height-lg:  40px;
+  --ui-nav-item-height:    34px;
+  --ui-table-row-height:   36px;
+  --ui-control-padding-x:  var(--space-3);
+}
+
+/* Touch — tablets and touch-capable laptops. Applied automatically on coarse
+   pointers, and available explicitly for shop-floor terminals. */
+[data-density="touch"] {
+  --ui-control-height-sm:  40px;
+  --ui-control-height:     44px;
+  --ui-control-height-lg:  48px;
+  --ui-nav-item-height:    48px;
+  --ui-table-row-height:   48px;
+}
+@media (pointer: coarse) {
+  :root:not([data-density="compact"]) {
+    --ui-control-height-sm:  40px;
+    --ui-control-height:     44px;
+    --ui-control-height-lg:  48px;
+    --ui-nav-item-height:    48px;
+    --ui-table-row-height:   48px;
+  }
+}
+
+/* ============================================================================
+   BASE
+   ============================================================================ */
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-regular);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Numerals align in columns everywhere, not only in tables */
+table, .tr-value, .tr-numeric { font-variant-numeric: tabular-nums; }
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-control);
+}
+
+/* ============================================================================
+   PRIMITIVE CLASSES — deliberately few
+   ============================================================================ */
+
+/* Measured value — the one legitimate home for DM Mono */
+.tr-value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-value);
+  letter-spacing: var(--tracking-data);
+  font-variant-numeric: tabular-nums;
+}
+.tr-value--lead {
+  font-family: var(--font-mono);
+  font-size: var(--fs-value-lg);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+/* Section label — all-caps sans, never mono */
+.tr-label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* The default divider. Reach for this before reaching for a card. */
+.tr-rule { border: 0; border-top: var(--ui-divider); margin: 0; }
+
+/* Text fields, selects and other typed-in surfaces. Raised surface + the
+   interaction border: identifiable as interactive without weighting the page. */
+.tr-field {
+  background: var(--surface-secondary);
+  border: var(--border-width) solid var(--border-interactive);
+  border-radius: var(--radius-control);
+  min-height: var(--ui-control-height);
+  padding: 0 var(--ui-control-padding-x);
+  color: var(--text-primary);
+  font: var(--fw-regular) var(--fs-body)/1 var(--font-sans);
+}
+.tr-field:hover { border-color: var(--text-tertiary); }
+
+/* A card is a claim that these things belong together. Use it when true. */
+.tr-surface {
+  background: var(--surface-secondary);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-surface);
+  padding: var(--space-6);
+}
+
+/* Selected state: a 2px accent rule and a quiet tint. No glow, no shadow. */
+.tr-selected {
+  background: var(--state-selected);
+  box-shadow: inset var(--border-width-emphasis) 0 0 0 var(--accent-rule);
+}
+
+.tr-btn {
+  height: var(--ui-control-height);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-control);
+  font: var(--fw-medium) var(--fs-sm)/1 var(--font-sans);
+  border: var(--border-width) solid transparent;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+.tr-btn--primary   { background: var(--action-primary); color: var(--action-primary-text); }
+.tr-btn--primary:hover { background: var(--action-primary-hover); }
+.tr-btn--secondary { background: transparent; color: var(--text-primary);
+                     border-color: var(--border-interactive); }
+.tr-btn--secondary:hover { background: var(--state-hover); }
+.tr-btn--quiet     { background: transparent; color: var(--text-secondary); }
+.tr-btn--quiet:hover { background: var(--state-hover); color: var(--text-primary); }
+
+/* Guarantees a control's own box meets the density's target floor. It grows the
+   control, it does not overlay a phantom area on its neighbours — which is why
+   there is no negative inset here and no ::after. */
+.tr-target {
+  min-width: var(--ui-target-min);
+  min-height: var(--ui-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Adjacent hit areas keep a real gap so dense layouts cannot produce mis-hits. */
+.tr-target + .tr-target { margin-left: var(--ui-target-gap); }
+
+/* ============================================================================
+   TAILWIND REFERENCE
+   Map the SEMANTIC layer, not the primitives. If a developer can write
+   bg-brand-teal, they will — and the theme stops working.
+   ============================================================================
+
+   theme: {
+     extend: {
+       colors: {
+         'surface-primary':   'var(--surface-primary)',
+         'surface-secondary': 'var(--surface-secondary)',
+         'surface-tertiary':  'var(--surface-tertiary)',
+         'text-primary':      'var(--text-primary)',
+         'text-secondary':    'var(--text-secondary)',
+         'text-tertiary':     'var(--text-tertiary)',
+         'action-primary':    'var(--action-primary)',
+         'status-critical':   'var(--status-critical)',
+         'status-warning':    'var(--status-warning)',
+         'status-success':    'var(--status-success)',
+         'border-subtle':     'var(--border-subtle)',
+       },
+       borderRadius: {
+         control: 'var(--radius-control)',
+         surface: 'var(--radius-surface)',
+         panel:   'var(--radius-panel)',
+       },
+       fontFamily: { sans: ['DM Sans','sans-serif'], mono: ['DM Mono','monospace'] },
+       fontSize: {
+         micro:'var(--fs-micro)', meta:'var(--fs-meta)', sm:'var(--fs-sm)',
+         base:'var(--fs-body)',   lg:'var(--fs-body-lg)',
+         h3:'var(--fs-h3)', h2:'var(--fs-h2)', h1:'var(--fs-h1)',
+       },
+       boxShadow: { overlay: 'var(--shadow-overlay)', none: 'none' },
+     }
+   }
+
+   REMOVED FROM THE SYSTEM — do not reintroduce:
+     --shadow-teal      teal glow             (decoration)
+     --color-slate      #1E3A5F blue surface  (read as blue, not neutral)
+     --radius-xl/2xl    16px / 24px           (arbitrary softness)
+     --shadow-sm/md/lg  three-step elevation  (elevation is spacing + surface)
+     --text-mono-sm     10px                  (below the legibility floor)
+
+   RENAMED IN v2.1 (v2.0 → v2.1):
+     --surface-canvas   → --surface-primary
+     --surface-raised   → --surface-secondary
+     --surface-sunken   → --surface-tertiary
+     --accent           → --action-primary
+     --signal-critical  → --status-critical
+     --signal-caution   → --status-warning
+     --signal-positive  → --status-success
+     --border-strong    → --border-default
+     --tr-*             → --brand-* / --palette-*
+
+   CHANGED IN v2.2:
+     --surface-hover    → --state-hover     (a tint over a surface, not a level)
+     --surface-selected → --state-selected
+     --surface-overlay  → removed; overlays use --surface-secondary + shadow
+     --ui-content-max   → --ui-content-narrative / --ui-content-analytical
+
+   REMOVED IN v2.4:
+     --tracking-descriptor  the set-under logo descriptor it governed has been
+                            withdrawn from the logo system
+
+   ADDED IN v2.5:
+     --border-interactive   affordance border for fields, selects and secondary
+                            buttons — stronger than --border-subtle, ≥3:1
+     --ui-target-gap        minimum clear space between adjacent hit areas
+     --ui-target-min        now density-dependent: 44px comfortable, 32px dense
+     dark --surface-tertiary was identical to --surface-secondary; it is now
+     graphite-850, so all three dark levels are visually distinct.
+   ============================================================================ */
+
+/* Fonts — DM Sans 400/500/600 and DM Mono 400/500. The wordmark is outlined,
+   so weight 700 is never loaded by the application.
+   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
+*/

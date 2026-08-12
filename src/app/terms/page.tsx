@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import { HtmlMain } from "@/components/HtmlMain";
 import { SiteShell } from "@/components/SiteShell";
-import { home } from "@/content";
+import { terms } from "@/content";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  ...home.meta,
-  canonical: "https://www.trooba.com/",
-  ogUrl: "https://www.trooba.com/",
+  ...terms.meta,
+  canonical: "https://www.trooba.com/terms",
+  ogUrl: "https://www.trooba.com/terms",
 });
 
-export default function HomePage() {
+export default function TermsPage() {
   return (
     <SiteShell>
-      <HtmlMain html={home.mainHtml} />
+      <HtmlMain html={terms.mainHtml} />
     </SiteShell>
   );
 }

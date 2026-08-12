@@ -1,10 +1,10 @@
 /* Owned by Troobaflowsite — edit this file directly. */
 export const meta = {
-  "title": "Trooba Flow — Factory Flow Intelligence for Manufacturers",
-  "description": "Trooba Flow predicts where work will queue in your factory, how manufacturing lead time will change, and where hidden capacity is sitting unused — before delivery slips.",
+  "title": "Trooba — Factory Flow Intelligence",
+  "description": "Reduce lead time, WIP and bottlenecks using Queueing Theory and QRM-based Factory Flow Intelligence.",
   "canonical": "https://www.trooba.com/index.html",
-  "ogTitle": "Trooba Flow — Factory Flow Intelligence for Manufacturers",
-  "ogDescription": "Trooba Flow predicts where work will queue in your factory, how manufacturing lead time will change, and where hidden capacity is sitting unused — before delivery slips.",
+  "ogTitle": "Trooba — Factory Flow Intelligence",
+  "ogDescription": "Reduce lead time, WIP and bottlenecks using Queueing Theory and QRM-based Factory Flow Intelligence.",
   "ogUrl": "https://www.trooba.com/index.html"
 } as const;
 

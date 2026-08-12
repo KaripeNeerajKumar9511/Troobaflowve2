@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 const SITE = "https://www.trooba.com";
-const OG_IMAGE = `${SITE}/assets/og-trooba-flow.png`;
+const OG_IMAGE = `${SITE}/og-banner.png`;
+const AUTHOR = "Techsprout AI Labs Pvt Ltd";
 
 type PageMetaInput = {
   title: string;
@@ -24,6 +25,25 @@ export function buildMetadata(input: PageMetaInput): Metadata {
   return {
     title,
     description,
+    authors: [{ name: AUTHOR, url: SITE }],
+    creator: AUTHOR,
+    publisher: AUTHOR,
+    applicationName: "Trooba Flow",
+    keywords: [
+      "Trooba",
+      "Trooba Flow",
+      "Factory Flow Intelligence",
+      "reduce lead time",
+      "reduce WIP",
+      "reduce bottlenecks",
+      "reduce queue time",
+      "Queueing Theory",
+      "QRM",
+      "Quick Response Manufacturing",
+      "manufacturing lead time",
+      "bottlenecks",
+      "WIP",
+    ],
     alternates: { canonical },
     robots: input.noIndex
       ? { index: false, follow: true }
@@ -39,7 +59,7 @@ export function buildMetadata(input: PageMetaInput): Metadata {
           url: OG_IMAGE,
           width: 1200,
           height: 630,
-          alt: "Trooba Flow — predict bottlenecks before they delay production.",
+          alt: "Trooba Flow",
         },
       ],
       locale: "en",
@@ -62,9 +82,10 @@ export const jsonLd = {
   description:
     "Factory Flow Intelligence. Trooba Flow models how work moves through a factory and predicts where queues, bottlenecks and lead time will appear.",
   url: SITE,
+  image: OG_IMAGE,
   publisher: {
     "@type": "Organization",
-    name: "Trooba",
+    name: AUTHOR,
     url: SITE,
   },
 };

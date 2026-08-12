@@ -176,10 +176,10 @@
      (Formspree, Basin, Netlify Forms, a Lambda, your own handler).
 
      If the action has not been configured, the form does NOT pretend to
-     succeed. It falls back to opening a pre-filled email to hello@trooba.com,
+     succeed. It falls back to opening a pre-filled email to flow@trooba.com,
      which is a real delivery path, and says so.                             */
 
-  var FALLBACK_EMAIL = 'hello@trooba.com';
+  var FALLBACK_EMAIL = 'flow@trooba.com';
 
   var form = document.querySelector('[data-flow-form]');
   if (form) {

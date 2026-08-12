@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const FALLBACK_EMAIL = "hello@trooba.com";
+const FALLBACK_EMAIL = "flow@trooba.com";
 
 /**
  * Ports trooba-site/assets/js/site.js behaviour for the Next.js app.

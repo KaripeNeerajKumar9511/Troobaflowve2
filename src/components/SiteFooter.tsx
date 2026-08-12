@@ -56,7 +56,7 @@ export function SiteFooter() {
         <div className="foot__base">
           <p>&copy; 2026 Trooba. All Rights Reserved.
 Trooba is owned and operated by
-Techsporut AI Labs Private Limited.</p>
+Techsprout AI Labs Private Limited.</p>
           
         </div>
       </div>

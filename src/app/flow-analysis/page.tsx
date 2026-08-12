@@ -6,11 +6,11 @@ import { buildMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "Request a Flow Analysis | Trooba Flow",
   description:
-    "Send a small set of factory data and receive an initial Flow Analysis: where queues, bottlenecks and hidden capacity are affecting your lead time.",
+    "Request a Trooba Flow Analysis to identify production bottlenecks, uncover costly queues, understand lead-time delays, and find the changes that can improve factory flow.",
   canonical: "https://www.trooba.com/flow-analysis",
   ogTitle: "Request a Flow Analysis | Trooba Flow",
   ogDescription:
-    "Send a small set of factory data and receive an initial Flow Analysis: where queues, bottlenecks and hidden capacity are affecting your lead time.",
+    "Request a Trooba Flow Analysis to identify production bottlenecks, uncover costly queues, understand lead-time delays, and find the changes that can improve factory flow.",
   ogUrl: "https://www.trooba.com/flow-analysis",
 });
 

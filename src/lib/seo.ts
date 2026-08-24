@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 
-const SITE = "https://www.trooba.com";
+export const SITE = "https://www.trooba.com";
+export const SITE_TITLE =
+  "Manufacturing Flow Optimization Software | Trooba Flow";
+export const SITE_DESCRIPTION =
+  "Trooba Flow helps manufacturers identify bottlenecks, reduce lead times, uncover hidden capacity, and test production changes before they affect the factory floor.";
+export const SITE_ICON = "/assets/logo/trooba-app-icon-512.svg";
 const OG_IMAGE = `${SITE}/og-banner.png`;
 const AUTHOR = "Techsprout AI Labs Pvt Ltd";
 
@@ -32,11 +37,12 @@ export function buildMetadata(input: PageMetaInput): Metadata {
     keywords: [
       "Trooba",
       "Trooba Flow",
+      "manufacturing flow optimization software",
       "Factory Flow Intelligence",
       "reduce lead time",
       "reduce WIP",
       "reduce bottlenecks",
-      "reduce queue time",
+      "hidden capacity",
       "Queueing Theory",
       "QRM",
       "Quick Response Manufacturing",
@@ -50,7 +56,7 @@ export function buildMetadata(input: PageMetaInput): Metadata {
       : { index: true, follow: true },
     openGraph: {
       type: "website",
-      siteName: "Trooba",
+      siteName: "Trooba Flow",
       url: ogUrl,
       title: ogTitle,
       description: ogDescription,
@@ -59,33 +65,53 @@ export function buildMetadata(input: PageMetaInput): Metadata {
           url: OG_IMAGE,
           width: 1200,
           height: 630,
-          alt: "Trooba Flow",
+          alt: "Trooba Flow — manufacturing flow optimization software",
         },
       ],
-      locale: "en",
+      locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description: ogDescription,
-      images: [OG_IMAGE],
+      images: [
+        {
+          url: OG_IMAGE,
+          alt: "Trooba Flow — manufacturing flow optimization software",
+        },
+      ],
     },
   };
 }
 
 export const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Trooba Flow",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Web",
-  description:
-    "Factory Flow Intelligence. Trooba Flow models how work moves through a factory and predicts where queues, bottlenecks and lead time will appear.",
-  url: SITE,
-  image: OG_IMAGE,
-  publisher: {
-    "@type": "Organization",
-    name: AUTHOR,
-    url: SITE,
-  },
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE}/#organization`,
+      name: "Trooba",
+      legalName: "Techsprout AI Labs Private Limited",
+      url: SITE,
+      logo: `${SITE}${SITE_ICON}`,
+      sameAs: ["https://www.linkedin.com/company/trooba"],
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "Trooba Flow",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      description: SITE_DESCRIPTION,
+      url: SITE,
+      image: OG_IMAGE,
+      publisher: { "@id": `${SITE}/#organization` },
+    },
+    {
+      "@type": "WebSite",
+      name: "Trooba Flow",
+      url: SITE,
+      description: SITE_DESCRIPTION,
+      publisher: { "@id": `${SITE}/#organization` },
+    },
+  ],
 };

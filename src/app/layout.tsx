@@ -1,20 +1,26 @@
 import type { Metadata } from "next";
-import { buildMetadata, jsonLd } from "@/lib/seo";
+import {
+  SITE_DESCRIPTION,
+  SITE_ICON,
+  SITE_TITLE,
+  buildMetadata,
+  jsonLd,
+} from "@/lib/seo";
 import "@/styles/trooba-design-tokens.css";
 import "@/styles/site.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
   ...buildMetadata({
-    title: "Trooba Flow — Factory Flow Intelligence for Manufacturers",
-    description:
-      "Trooba Flow predicts where work will queue in your factory, how manufacturing lead time will change, and where hidden capacity is sitting unused — before delivery slips.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     canonical: "https://www.trooba.com/",
   }),
   metadataBase: new URL("https://www.trooba.com"),
   icons: {
-    icon: [{ url: "/assets/logo/favicon.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/assets/logo/trooba-app-icon-512.svg" }],
+    icon: [{ url: SITE_ICON, type: "image/svg+xml", sizes: "any" }],
+    shortcut: SITE_ICON,
+    apple: [{ url: SITE_ICON, sizes: "180x180" }],
   },
   other: {
     "theme-color": "#F6F6F4",

@@ -29,7 +29,7 @@ export function SiteHeader({ current = null }: SiteHeaderProps) {
               href="/proof"
               {...(current === "proof" ? { "aria-current": "page" as const } : {})}
             >
-              Proof
+              Case Studies
             </Link>
             <Link
               href="/about"

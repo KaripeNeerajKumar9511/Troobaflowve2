@@ -1,10 +1,10 @@
 /* Owned by Troobaflowsite — edit this file directly. */
 export const meta = {
-  title: "Proof — a measured manufacturing lead-time reduction | Trooba Flow",
+  title: "Case Studies — a measured manufacturing lead-time reduction | Trooba Flow",
   description:
     "Factory flow case studies: a completed transformation that cut manufacturing lead time from 28 days to 7, and an in-progress design-partner model validation.",
   canonical: "https://www.trooba.com/proof.html",
-  ogTitle: "Proof — a measured manufacturing lead-time reduction | Trooba Flow",
+  ogTitle: "Case Studies — a measured manufacturing lead-time reduction | Trooba Flow",
   ogDescription:
     "Factory flow case studies: a completed transformation that cut manufacturing lead time from 28 days to 7, and an in-progress design-partner model validation.",
   ogUrl: "https://www.trooba.com/proof.html",
@@ -14,11 +14,41 @@ export const mainHtml = `<section class="phead"><div class="wrap">
   <h1 class="section-title section-title--wide">Proven on the factory floor.</h1>
   <p class="lead">One completed transformation with measured results, and one design-partner model
     still being validated. We say which is which.</p>
+
+  <div class="cases-index">
+    <a class="cases-card" href="#case-01">
+      <div class="cases-card__copy">
+        <p class="cases-card__meta">
+          <span class="cases-card__badge">Case 01</span>
+          <span class="cases-card__status">Completed &middot; Measured result</span>
+        </p>
+        <h2 class="cases-card__title">Tarinika</h2>
+        <p class="cases-card__metric">28 <span>&rarr;</span> <em>7</em> days</p>
+        <p class="cases-card__cap">&gt; 75% reduction in manufacturing lead time</p>
+      </div>
+      <figure class="cases-card__media">
+        <img src="/Tarinika.png" alt="Factory floor at Tarinika" width="720" height="540">
+      </figure>
+    </a>
+    <a class="cases-card" href="#case-02">
+      <div class="cases-card__copy">
+        <p class="cases-card__meta">
+          <span class="cases-card__badge">Case 02</span>
+          <span class="cases-card__status">In progress &middot; Modelled scenario</span>
+        </p>
+        <h2 class="cases-card__title">High-mix packaging manufacturer</h2>
+        <p class="cases-card__note">Modelled scenario, not a measured outcome.</p>
+      </div>
+      <figure class="cases-card__media cases-card__media--dark">
+        <img src="/packing.png" alt="Packaging line model for a high-mix manufacturer" width="720" height="540">
+      </figure>
+    </a>
+  </div>
 </div></section>
 
 <section class="section--tight"><div class="wrap">
 
-  <article class="case" style="border-top:0">
+  <article class="case" id="case-01" tabindex="-1">
     <p class="case__tag"><i class="measured"></i>Case 01 &middot; Completed &middot; Measured result</p>
     <h2 class="section-title">Tarinika</h2>
 
@@ -48,7 +78,7 @@ export const mainHtml = `<section class="phead"><div class="wrap">
       measurement is real, and so is the relationship.</span></p>
   </article>
 
-  <article class="case">
+  <article class="case" id="case-02" tabindex="-1">
     <p class="case__tag"><i class="modelled"></i>Case 02 &middot; In progress &middot; Modelled scenario</p>
     <h2 class="section-title">High-mix packaging manufacturer</h2>
     <p class="lead u-mt6">A design partner running a high-mix, low-volume

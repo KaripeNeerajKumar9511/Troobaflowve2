@@ -15,6 +15,16 @@ const nextConfig: NextConfig = {
       { source: "/proof.html", destination: "/proof", permanent: true },
       { source: "/about.html", destination: "/about", permanent: true },
       {
+        source: "/solutions.html",
+        destination: "/solutions",
+        permanent: true,
+      },
+      {
+        source: "/ai-capabilities.html",
+        destination: "/ai-capabilities",
+        permanent: true,
+      },
+      {
         source: "/flow-analysis.html",
         destination: "/flow-analysis",
         permanent: true,

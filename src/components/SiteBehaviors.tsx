@@ -214,6 +214,56 @@ export function SiteBehaviors() {
       });
     });
 
+    /* -- 3c. AI capability selectors (hub, questions, chips) -------------- */
+    document.querySelectorAll("[data-ai-select]").forEach((root) => {
+      const opts = Array.from(
+        root.querySelectorAll<HTMLElement>("[data-ai-opt]"),
+      );
+
+      function apply(id: string) {
+        root.setAttribute("data-ai-on", id);
+        opts.forEach((o) => {
+          const on = o.getAttribute("data-ai-opt") === id;
+          o.setAttribute("aria-pressed", String(on));
+        });
+        root.querySelectorAll("[data-ai-mark]").forEach((m) => {
+          m.classList.toggle(
+            "is-on",
+            m.getAttribute("data-ai-mark") === id,
+          );
+        });
+        const live = root.querySelector("[data-ai-live]");
+        const src = opts.find((o) => o.getAttribute("data-ai-opt") === id);
+        if (live && src) {
+          live.textContent = src.getAttribute("data-ai-msg") || "";
+        }
+      }
+
+      const clickHandlers: Array<[HTMLElement, () => void]> = [];
+      const keyHandlers: Array<[HTMLElement, (e: Event) => void]> = [];
+      opts.forEach((o) => {
+        const onActivate = () => apply(o.getAttribute("data-ai-opt") || "");
+        o.addEventListener("click", onActivate);
+        clickHandlers.push([o, onActivate]);
+        if (o.tagName !== "BUTTON") {
+          const onKey = (e: Event) => {
+            const ke = e as KeyboardEvent;
+            if (ke.key !== "Enter" && ke.key !== " ") return;
+            ke.preventDefault();
+            onActivate();
+          };
+          o.addEventListener("keydown", onKey);
+          keyHandlers.push([o, onKey]);
+        }
+      });
+
+      apply(root.getAttribute("data-ai-on") || opts[0]?.getAttribute("data-ai-opt") || "");
+      cleanups.push(() => {
+        clickHandlers.forEach(([el, h]) => el.removeEventListener("click", h));
+        keyHandlers.forEach(([el, h]) => el.removeEventListener("keydown", h));
+      });
+    });
+
     /* -- 4. Flow-analysis form --------------------------------------------- */
     const form = document.querySelector<HTMLFormElement>("[data-flow-form]");
     if (form) {

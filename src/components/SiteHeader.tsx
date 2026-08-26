@@ -1,7 +1,15 @@
 import Link from "next/link";
 
+export type NavCurrent =
+  | "how-it-works"
+  | "proof"
+  | "about"
+  | "solutions"
+  | "ai-capabilities"
+  | null;
+
 type SiteHeaderProps = {
-  current?: "how-it-works" | "proof" | "about" | null;
+  current?: NavCurrent;
 };
 
 export function SiteHeader({ current = null }: SiteHeaderProps) {
@@ -36,6 +44,18 @@ export function SiteHeader({ current = null }: SiteHeaderProps) {
               {...(current === "about" ? { "aria-current": "page" as const } : {})}
             >
               About
+            </Link>
+            <Link
+              href="/solutions"
+              {...(current === "solutions" ? { "aria-current": "page" as const } : {})}
+            >
+              Solutions
+            </Link>
+            <Link
+              href="/ai-capabilities"
+              {...(current === "ai-capabilities" ? { "aria-current": "page" as const } : {})}
+            >
+              AI Capabilities
             </Link>
           </nav>
           <div className="nav__right">
@@ -82,6 +102,18 @@ export function SiteHeader({ current = null }: SiteHeaderProps) {
               {...(current === "about" ? { "aria-current": "page" as const } : {})}
             >
               About
+            </Link>
+            <Link
+              href="/solutions"
+              {...(current === "solutions" ? { "aria-current": "page" as const } : {})}
+            >
+              Solutions
+            </Link>
+            <Link
+              href="/ai-capabilities"
+              {...(current === "ai-capabilities" ? { "aria-current": "page" as const } : {})}
+            >
+              AI Capabilities
             </Link>
             {/* <a href="https://app.trooba.com">Log in</a> */}
           </nav>

@@ -25,6 +25,12 @@ export function SiteFooter() {
                 <Link href="/how-it-works">How it works</Link>
               </li>
               <li>
+                <Link href="/solutions">Solutions</Link>
+              </li>
+              <li>
+                <Link href="/ai-capabilities">AI Capabilities</Link>
+              </li>
+              <li>
                 <Link href="/proof">Proof</Link>
               </li>
               <li>

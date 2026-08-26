@@ -1,10 +1,10 @@
 import { IconSprite } from "./IconSprite";
 import { SiteBehaviors } from "./SiteBehaviors";
 import { SiteFooter } from "./SiteFooter";
-import { SiteHeader } from "./SiteHeader";
+import { SiteHeader, type NavCurrent } from "./SiteHeader";
 
 type SiteShellProps = {
-  current?: "how-it-works" | "proof" | "about" | null;
+  current?: NavCurrent;
   children: React.ReactNode;
 };
 

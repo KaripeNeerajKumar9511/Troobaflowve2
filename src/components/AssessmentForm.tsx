@@ -149,7 +149,7 @@ export function AssessmentForm({
         <div className="assess-form__foot">
           <p className="meta">
             Already have an account?{" "}
-            <a href="https://app.trooba.com">Login.</a>
+            <a href="https://gotrooba.ai" target="_blank">Login.</a>
           </p>
           <p className="meta">
             We use this to reply to you and for nothing else. See the{" "}
@@ -473,7 +473,7 @@ export function AssessmentForm({
       <div className="assess-form__foot">
         <p className="meta">
           Already have an account?{" "}
-          <a href="https://app.trooba.com">Login.</a>
+          <a href="https://gotrooba.ai" target="_blank">Login.</a>
         </p>
         <p className="meta">
           We use this to reply to you and for nothing else. See the{" "}

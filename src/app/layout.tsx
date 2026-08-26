@@ -19,9 +19,13 @@ export const metadata: Metadata = {
   }),
   metadataBase: new URL("https://www.trooba.com"),
   icons: {
-    icon: [{ url: SITE_ICON, type: "image/svg+xml", sizes: "any" }],
+    icon: [
+      { url: SITE_ICON, type: "image/svg+xml", sizes: "any" },
+      { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+    ],
     shortcut: SITE_ICON,
-    apple: [{ url: SITE_ICON, sizes: "180x180" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   other: {
     "theme-color": "#F6F6F4",

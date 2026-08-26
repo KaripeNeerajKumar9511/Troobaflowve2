@@ -5,7 +5,8 @@ export const SITE_TITLE =
   "Manufacturing Flow Optimization Software | Trooba Flow";
 export const SITE_DESCRIPTION =
   "Trooba Flow helps manufacturers identify bottlenecks, reduce lead times, uncover hidden capacity, and test production changes before they affect the factory floor.";
-export const SITE_ICON = "/assets/logo/trooba-app-icon-512.svg";
+export const SITE_ICON = "/favicon.svg";
+export const SITE_ICON_PNG = "/icon-512.png";
 const OG_IMAGE = `${SITE}/og-banner.png`;
 const AUTHOR = "Techsprout AI Labs Pvt Ltd";
 
@@ -93,7 +94,7 @@ export const jsonLd = {
       name: "Trooba",
       legalName: "Techsprout AI Labs Private Limited",
       url: SITE,
-      logo: `${SITE}${SITE_ICON}`,
+      logo: `${SITE}${SITE_ICON_PNG}`,
       sameAs: ["https://www.linkedin.com/company/trooba"],
     },
     {

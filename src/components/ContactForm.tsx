@@ -206,7 +206,7 @@ function FormFoot() {
     <div className="assess-form__foot">
       <p className="meta">
         Already have an account?{" "}
-        <a href="https://app.trooba.com">Login.</a>
+        <a href="https://gotrooba.ai">Login.</a>
       </p>
       <p className="meta">
         We use this to reply to you and for nothing else. See the{" "}

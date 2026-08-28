@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import {
   SITE_DESCRIPTION,
-  SITE_ICON,
   SITE_TITLE,
   buildMetadata,
   jsonLd,
@@ -20,11 +19,10 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.trooba.com"),
   icons: {
     icon: [
-      { url: SITE_ICON, type: "image/svg+xml", sizes: "any" },
+      { url: "/favicon.ico", type: "image/x-icon" },
       { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
       { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
     ],
-    shortcut: SITE_ICON,
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   other: {

@@ -3,11 +3,11 @@ export const meta = {
   title: "Case Studies — a measured manufacturing lead-time reduction | Trooba Flow",
   description:
     "Factory flow case studies: a completed transformation that cut manufacturing lead time from 28 days to 7, and an in-progress design-partner model validation.",
-  canonical: "https://www.trooba.com/proof.html",
+  canonical: "https://trooba.com/proof.html",
   ogTitle: "Case Studies — a measured manufacturing lead-time reduction | Trooba Flow",
   ogDescription:
     "Factory flow case studies: a completed transformation that cut manufacturing lead time from 28 days to 7, and an in-progress design-partner model validation.",
-  ogUrl: "https://www.trooba.com/proof.html",
+  ogUrl: "https://trooba.com/proof.html",
 } as const;
 
 export const mainHtml = `<section class="phead"><div class="wrap">

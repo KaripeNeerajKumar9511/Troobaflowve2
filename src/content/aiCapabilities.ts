@@ -3,11 +3,11 @@ export const meta = {
   title: "AI Capabilities — manufacturing intelligence | Trooba Flow",
   description:
     "AI that understands your factory, grounded in manufacturing physics. Trooba Flow combines AI with queueing theory so explanations, predictions and recommendations are validated by the model.",
-  canonical: "https://www.trooba.com/ai-capabilities.html",
+  canonical: "https://trooba.com/ai-capabilities.html",
   ogTitle: "AI Capabilities — manufacturing intelligence | Trooba Flow",
   ogDescription:
     "AI that understands your factory — grounded in manufacturing physics. The AI proposes. The model validates.",
-  ogUrl: "https://www.trooba.com/ai-capabilities.html",
+  ogUrl: "https://trooba.com/ai-capabilities.html",
 } as const;
 
 export const mainHtml = `<section class="hero aic-hero">

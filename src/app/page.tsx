@@ -6,8 +6,8 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   ...home.meta,
-  canonical: "https://www.trooba.com/",
-  ogUrl: "https://www.trooba.com/",
+  canonical: "https://trooba.com/",
+  ogUrl: "https://trooba.com/",
 });
 
 export default function HomePage() {

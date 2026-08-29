@@ -6,8 +6,8 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   ...proof.meta,
-  canonical: "https://www.trooba.com/proof",
-  ogUrl: "https://www.trooba.com/proof",
+  canonical: "https://trooba.com/proof",
+  ogUrl: "https://trooba.com/proof",
 });
 
 export default function ProofPage() {

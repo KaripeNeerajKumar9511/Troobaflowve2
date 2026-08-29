@@ -7,11 +7,11 @@ export const metadata: Metadata = buildMetadata({
   title: "Request a Flow Analysis | Trooba Flow",
   description:
     "Request a Trooba Flow Analysis to identify production bottlenecks, uncover costly queues, understand lead-time delays, and find the changes that can improve factory flow.",
-  canonical: "https://www.trooba.com/flow-analysis",
+  canonical: "https://trooba.com/flow-analysis",
   ogTitle: "Request a Flow Analysis | Trooba Flow",
   ogDescription:
     "Request a Trooba Flow Analysis to identify production bottlenecks, uncover costly queues, understand lead-time delays, and find the changes that can improve factory flow.",
-  ogUrl: "https://www.trooba.com/flow-analysis",
+  ogUrl: "https://trooba.com/flow-analysis",
 });
 
 export default function FlowAnalysisPage() {

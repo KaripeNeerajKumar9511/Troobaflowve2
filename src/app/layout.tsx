@@ -14,9 +14,9 @@ export const metadata: Metadata = {
   ...buildMetadata({
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    canonical: "https://www.trooba.com/",
+    canonical: "https://trooba.com/",
   }),
-  metadataBase: new URL("https://www.trooba.com"),
+  metadataBase: new URL("https://trooba.com"),
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon" },

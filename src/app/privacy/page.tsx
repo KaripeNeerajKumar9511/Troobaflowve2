@@ -6,8 +6,8 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   ...privacy.meta,
-  canonical: "https://www.trooba.com/privacy",
-  ogUrl: "https://www.trooba.com/privacy",
+  canonical: "https://trooba.com/privacy",
+  ogUrl: "https://trooba.com/privacy",
 });
 
 export default function PrivacyPage() {

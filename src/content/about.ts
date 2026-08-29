@@ -3,11 +3,11 @@ export const meta = {
   title: "About — built by manufacturing people | Trooba Flow",
   description:
     "Trooba Flow was created to make invisible factory dynamics visible: queues, variability, lot sizes, shared resources and changing demand.",
-  canonical: "https://www.trooba.com/about.html",
+  canonical: "https://trooba.com/about.html",
   ogTitle: "About — built by manufacturing people | Trooba Flow",
   ogDescription:
     "Trooba Flow was created to make invisible factory dynamics visible: queues, variability, lot sizes, shared resources and changing demand.",
-  ogUrl: "https://www.trooba.com/about.html",
+  ogUrl: "https://trooba.com/about.html",
 } as const;
 
 export const mainHtml = `<section class="hero about-hero">

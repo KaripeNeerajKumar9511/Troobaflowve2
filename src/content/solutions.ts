@@ -3,11 +3,11 @@ export const meta = {
   title: "Our Solutions — factory problems Trooba Flow solves | Trooba Flow",
   description:
     "Trooba Flow helps manufacturers reduce lead time, find hidden bottlenecks, cut WIP and queues, make better capacity decisions, improve on-time delivery, and test changes before the shop floor.",
-  canonical: "https://www.trooba.com/solutions.html",
+  canonical: "https://trooba.com/solutions.html",
   ogTitle: "Our Solutions — factory problems Trooba Flow solves | Trooba Flow",
   ogDescription:
     "Trooba Flow helps manufacturers understand what is driving lead time, queues and capacity constraints — and test improvements before changing the shop floor.",
-  ogUrl: "https://www.trooba.com/solutions.html",
+  ogUrl: "https://trooba.com/solutions.html",
 } as const;
 
 export const mainHtml = `<section class="hero sol-hero">

@@ -7,11 +7,11 @@ export const metadata: Metadata = buildMetadata({
   title: "Contact | Trooba Flow",
   description:
     "Contact Trooba Flow. Tell us what is going wrong in your factory and we will follow up.",
-  canonical: "https://www.trooba.com/contact",
+  canonical: "https://trooba.com/contact",
   ogTitle: "Contact | Trooba Flow",
   ogDescription:
     "Contact Trooba Flow. Tell us what is going wrong in your factory and we will follow up.",
-  ogUrl: "https://www.trooba.com/contact",
+  ogUrl: "https://trooba.com/contact",
 });
 
 export default function ContactPage() {

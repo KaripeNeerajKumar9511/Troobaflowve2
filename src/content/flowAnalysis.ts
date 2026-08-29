@@ -3,11 +3,11 @@ export const meta = {
   title: "Request a Flow Analysis | Trooba Flow",
   description:
     "Request a Trooba Flow Analysis to identify production bottlenecks, uncover costly queues, understand lead-time delays, and find the changes that can improve factory flow.",
-  canonical: "https://www.trooba.com/flow-analysis.html",
+  canonical: "https://trooba.com/flow-analysis.html",
   ogTitle: "Request a Flow Analysis | Trooba Flow",
   ogDescription:
     "Request a Trooba Flow Analysis to identify production bottlenecks, uncover costly queues, understand lead-time delays, and find the changes that can improve factory flow.",
-  ogUrl: "https://www.trooba.com/flow-analysis.html",
+  ogUrl: "https://trooba.com/flow-analysis.html",
 } as const;
 
 export const mainHtml = `<section class="phead"><div class="wrap">

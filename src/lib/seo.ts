@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const SITE = "https://www.trooba.com";
+export const SITE = "https://trooba.com";
 export const SITE_TITLE =
   "Manufacturing Flow Optimization Software | Trooba Flow";
 export const SITE_DESCRIPTION =

@@ -1,19 +1,15 @@
-import type { Metadata } from "next";
-import { HtmlMain } from "@/components/HtmlMain";
-import { SiteShell } from "@/components/SiteShell";
-import { proof } from "@/content";
-import { buildMetadata } from "@/lib/seo";
+import { CmsHtmlPage, cmsMetadata } from "@/components/CmsHtmlPage";
 
-export const metadata: Metadata = buildMetadata({
-  ...proof.meta,
-  canonical: "https://trooba.com/proof",
-  ogUrl: "https://trooba.com/proof",
-});
+export const generateMetadata = () =>
+  cmsMetadata("proof", "https://trooba.com/proof", "https://trooba.com/proof");
 
 export default function ProofPage() {
   return (
-    <SiteShell current="proof">
-      <HtmlMain html={proof.mainHtml} />
-    </SiteShell>
+    <CmsHtmlPage
+      slug="proof"
+      current="proof"
+      canonical="https://trooba.com/proof"
+      ogUrl="https://trooba.com/proof"
+    />
   );
 }

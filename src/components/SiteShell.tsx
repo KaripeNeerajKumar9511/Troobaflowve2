@@ -1,3 +1,4 @@
+import { getSite } from "@/lib/cms";
 import { IconSprite } from "./IconSprite";
 import { SiteBehaviors } from "./SiteBehaviors";
 import { SiteFooter } from "./SiteFooter";
@@ -8,16 +9,17 @@ type SiteShellProps = {
   children: React.ReactNode;
 };
 
-export function SiteShell({ current = null, children }: SiteShellProps) {
+export async function SiteShell({ current = null, children }: SiteShellProps) {
+  const site = await getSite();
   return (
     <>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <SiteHeader current={current} />
+      <SiteHeader current={current} site={site} />
       <IconSprite />
       {children}
-      <SiteFooter />
+      <SiteFooter site={site} />
       <SiteBehaviors />
     </>
   );

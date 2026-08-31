@@ -21,7 +21,23 @@ const empty: ContactFields = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function ContactForm() {
+export type ContactCopy = {
+  formTitle?: string;
+  formSubtitle?: string;
+  labels?: Record<string, string>;
+  placeholders?: Record<string, string>;
+  problemHint?: string;
+  submitLabel?: string;
+  submittingLabel?: string;
+  successMessage?: string;
+  loginHref?: string;
+  loginHtml?: string;
+  loginLabel?: string;
+  privacyNote?: string;
+};
+
+export function ContactForm({ copy }: { copy?: ContactCopy }) {
+  const labels = copy?.labels || {};
   const [form, setForm] = useState<ContactFields>(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState("");
@@ -85,10 +101,10 @@ export function ContactForm() {
     return (
       <div className="assess-form-wrap">
         <FormSuccess>
-          We&apos;ll personally review your request and follow up with the
-          essentials for your product family.
+          {copy?.successMessage ||
+            "We'll personally review your request and follow up with the essentials for your product family."}
         </FormSuccess>
-        <FormFoot />
+        <FormFoot copy={copy} />
       </div>
     );
   }
@@ -98,16 +114,17 @@ export function ContactForm() {
       <form className="form panel" onSubmit={onSubmit} noValidate>
         <div>
           <h2 className="h3" style={{ marginBottom: "var(--space-2)" }}>
-            Send the details
+            {copy?.formTitle || "Send the details"}
           </h2>
           <p className="meta">
-            Five fields. We will ask for the data itself after we have replied.
+            {copy?.formSubtitle ||
+              "Five fields. We will ask for the data itself after we have replied."}
           </p>
         </div>
 
         <div className="two-up">
           <div className="field">
-            <label htmlFor="c-name">Name</label>
+            <label htmlFor="c-name">{labels.name || "Name"}</label>
             <input
               id="c-name"
               name="name"
@@ -120,7 +137,7 @@ export function ContactForm() {
             {errors.name ? <p className="err">{errors.name}</p> : null}
           </div>
           <div className="field">
-            <label htmlFor="c-email">Work email</label>
+            <label htmlFor="c-email">{labels.email || "Work email"}</label>
             <input
               id="c-email"
               name="email"
@@ -135,7 +152,7 @@ export function ContactForm() {
         </div>
 
         <div className="field">
-          <label htmlFor="c-company">Company</label>
+          <label htmlFor="c-company">{labels.company || "Company"}</label>
           <input
             id="c-company"
             name="company"
@@ -150,32 +167,39 @@ export function ContactForm() {
 
         <div className="field">
           <label htmlFor="c-role">
-            Role <span className="u-tert">(optional)</span>
+            {labels.role || "Role"}{" "}
+            <span className="u-tert">{labels.roleOptional || "(optional)"}</span>
           </label>
           <input
             id="c-role"
             name="role"
             type="text"
-            placeholder="Plant manager, operations, engineering"
+            placeholder={
+              copy?.placeholders?.role ||
+              "Plant manager, operations, engineering"
+            }
             value={form.role}
             onChange={(e) => setField("role", e.target.value)}
           />
         </div>
 
         <div className="field">
-          <label htmlFor="c-problem">What is going wrong</label>
+          <label htmlFor="c-problem">{labels.problem || "What is going wrong"}</label>
           <textarea
             id="c-problem"
             name="problem"
             value={form.problem}
             aria-invalid={errors.problem ? true : undefined}
             aria-describedby="c-problem-hint"
-            placeholder="Late orders on a particular family, lead time that will not come down, a capacity decision you are about to make."
+            placeholder={
+              copy?.placeholders?.problem ||
+              "Late orders on a particular family, lead time that will not come down, a capacity decision you are about to make."
+            }
             onChange={(e) => setField("problem", e.target.value)}
           />
           <p className="hint" id="c-problem-hint">
-            Plain description is fine. We would rather have the symptom than a
-            diagnosis.
+            {copy?.problemHint ||
+              "Plain description is fine. We would rather have the symptom than a diagnosis."}
           </p>
           {errors.problem ? <p className="err">{errors.problem}</p> : null}
         </div>
@@ -193,23 +217,28 @@ export function ContactForm() {
           disabled={submitting}
           style={{ width: "100%" }}
         >
-          {submitting ? "Submitting..." : "Request a Flow Analysis"}
+          {submitting
+            ? copy?.submittingLabel || "Submitting..."
+            : copy?.submitLabel || "Request a Flow Analysis"}
         </button>
       </form>
-      <FormFoot />
+      <FormFoot copy={copy} />
     </div>
   );
 }
 
-function FormFoot() {
+function FormFoot({ copy }: { copy?: ContactCopy }) {
   return (
     <div className="assess-form__foot">
       <p className="meta">
-        Already have an account?{" "}
-        <a href="https://gotrooba.ai">Login.</a>
+        {copy?.loginHtml || "Already have an account?"}{" "}
+        <a href={copy?.loginHref || "https://gotrooba.ai"}>
+          {copy?.loginLabel || "Login."}
+        </a>
       </p>
       <p className="meta">
-        We use this to reply to you and for nothing else. See the{" "}
+        {copy?.privacyNote ||
+          "We use this to reply to you and for nothing else. See the privacy notice."}{" "}
         <a href="/privacy">privacy notice</a>.
       </p>
     </div>

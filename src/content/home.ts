@@ -1,10 +1,10 @@
 /* Owned by Troobaflowsite — edit this file directly. */
 export const meta = {
-  title: "Manufacturing Flow Optimization Software | Trooba Flow",
+  title: "AI-Powered Factory Flow Intelligence for Manufacturing | Trooba Flow",
   description:
     "Trooba Flow helps manufacturers identify bottlenecks, reduce lead times, uncover hidden capacity, and test production changes before they affect the factory floor.",
   canonical: "https://trooba.com/",
-  ogTitle: "Manufacturing Flow Optimization Software | Trooba Flow",
+  ogTitle: "AI-Powered Factory Flow Intelligence for Manufacturing | Trooba Flow",
   ogDescription:
     "Trooba Flow helps manufacturers identify bottlenecks, reduce lead times, uncover hidden capacity, and test production changes before they affect the factory floor.",
   ogUrl: "https://trooba.com/",

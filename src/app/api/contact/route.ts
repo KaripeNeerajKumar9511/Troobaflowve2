@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendContactEmail } from "@/lib/assessment/mail";
+import { persistLead } from "@/lib/cms";
 
 export const runtime = "nodejs";
 
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
   }
 
   try {
+    await persistLead("contact", form);
     const { messageId } = await sendContactEmail(form);
     return NextResponse.json({ success: true, messageId });
   } catch (err) {

@@ -1,32 +1,39 @@
-import type { Metadata } from "next";
-import { ContactForm } from "@/components/ContactForm";
+import { ContactForm, type ContactCopy } from "@/components/ContactForm";
 import { SiteShell } from "@/components/SiteShell";
-import { buildMetadata } from "@/lib/seo";
+import { cmsMetadata } from "@/components/CmsHtmlPage";
+import { getPage } from "@/lib/cms";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Contact | Trooba Flow",
-  description:
-    "Contact Trooba Flow. Tell us what is going wrong in your factory and we will follow up.",
-  canonical: "https://trooba.com/contact",
-  ogTitle: "Contact | Trooba Flow",
-  ogDescription:
-    "Contact Trooba Flow. Tell us what is going wrong in your factory and we will follow up.",
-  ogUrl: "https://trooba.com/contact",
-});
+export const generateMetadata = () =>
+  cmsMetadata(
+    "contact",
+    "https://trooba.com/contact",
+    "https://trooba.com/contact",
+  );
 
-export default function ContactPage() {
+type Step = { title?: string; body?: string };
+
+export default async function ContactPage() {
+  const page = await getPage("contact");
+  const f = page.fields as Record<string, unknown>;
+  const steps = (Array.isArray(f.steps) ? f.steps : []) as Step[];
+  const copy = f as ContactCopy;
+
   return (
     <SiteShell>
       <main id="main">
         <section className="phead">
           <div className="wrap">
-            <p className="tr-label">Trooba Flow™ Factory Flow Assessment</p>
+            <p className="tr-label">
+              {String(f.label || "Trooba Flow™ Factory Flow Assessment")}
+            </p>
             <h1 className="section-title section-title--wide u-mt4">
-              We&apos;re selective. Intentionally.
+              {String(f.h1 || "We're selective. Intentionally.")}
             </h1>
             <p className="lead">
-              We run a structured pilot with manufacturers who have complex
-              operations and a genuine appetite to understand their system.
+              {String(
+                f.lead ||
+                  "We run a structured pilot with manufacturers who have complex operations and a genuine appetite to understand their system.",
+              )}
             </p>
           </div>
         </section>
@@ -35,34 +42,37 @@ export default function ContactPage() {
           <div className="wrap">
             <div className="ba">
               <div className="ba__intro">
-                <h2 className="tr-label">What happens next</h2>
+                <h2 className="tr-label">
+                  {String(f.nextHeading || "What happens next")}
+                </h2>
                 <dl className="u-mt6">
-                  <div className="fact">
-                    <dt>1&nbsp;&nbsp;Review</dt>
-                    <dd>
-                      We review your submission within 2 business days.
-                    </dd>
-                  </div>
-                  <div className="fact">
-                    <dt>2&nbsp;&nbsp;Fit call</dt>
-                    <dd>
-                      If there&apos;s a fit: a 60-minute call about your
-                      operation.
-                    </dd>
-                  </div>
-                  <div className="fact">
-                    <dt>3&nbsp;&nbsp;Walkthrough</dt>
-                    <dd>
-                      We walk through a Trooba Flow analysis using your factory
-                      context.
-                    </dd>
-                  </div>
+                  {(steps.length
+                    ? steps
+                    : [
+                        {
+                          title: "1  Review",
+                          body: "We review your submission within 2 business days.",
+                        },
+                        {
+                          title: "2  Fit call",
+                          body: "If there's a fit: a 60-minute call about your operation.",
+                        },
+                        {
+                          title: "3  Walkthrough",
+                          body: "We walk through a Trooba Flow analysis using your factory context.",
+                        },
+                      ]
+                  ).map((s) => (
+                    <div className="fact" key={s.title}>
+                      <dt>{s.title}</dt>
+                      <dd>{s.body}</dd>
+                    </div>
+                  ))}
                 </dl>
-                {/* <p className="tr-label"> For Flow Analysis requests, please email:</p> <a href="mailto:flow@trooba.com">flow@trooba.com</a> */}
               </div>
 
               <div className="ba__form">
-                <ContactForm />
+                <ContactForm copy={copy} />
               </div>
             </div>
           </div>

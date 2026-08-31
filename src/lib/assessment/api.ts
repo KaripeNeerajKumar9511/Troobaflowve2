@@ -5,6 +5,7 @@ import {
   parseAssessmentBody,
   validateFullPayload,
 } from "@/lib/assessment/validate";
+import { persistLead } from "@/lib/cms";
 
 export async function handleAssessmentPost(
   request: Request,
@@ -37,6 +38,7 @@ export async function handleAssessmentPost(
   }
 
   try {
+    await persistLead("request", { payload: form, ...form });
     const { messageId } = await sendAssessmentEmail(form, source);
     return NextResponse.json({ success: true, messageId });
   } catch (err) {

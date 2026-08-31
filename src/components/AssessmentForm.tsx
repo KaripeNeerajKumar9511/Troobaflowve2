@@ -6,8 +6,7 @@ import { PortalSelect } from "@/components/PortalSelect";
 import type { AssessmentFormState, AssessmentSource } from "@/lib/assessment/types";
 import { emptyAssessmentForm, STEP_TITLES, TOTAL_STEPS } from "@/lib/assessment/types";
 import {
-  CHALLENGE_FIELDS_A,
-  CHALLENGE_FIELDS_B,
+  CHALLENGE_FIELDS,
   DATA_AVAILABILITY_OPTIONS,
   EMPLOYEE_OPTIONS,
   ERP_OPTIONS,
@@ -23,10 +22,29 @@ import {
 } from "@/lib/assessment/options";
 import { validateStep } from "@/lib/assessment/validate";
 
+export type AssessmentCopy = {
+  formTitle?: string;
+  formSubtitle?: string;
+  successMessage?: string;
+  submitLabel?: string;
+  submittingLabel?: string;
+  stepTitles?: string[];
+  options?: {
+    industry?: string[];
+    revenue?: string[];
+    employees?: string[];
+    erp?: string[];
+    metrics?: string[];
+    priorities?: string[];
+    challenges?: { key: string; label: string }[];
+  };
+};
+
 type AssessmentFormProps = {
   source: AssessmentSource;
   title?: string;
   subtitle?: string;
+  copy?: AssessmentCopy;
 };
 
 const API_BY_SOURCE: Record<AssessmentSource, string> = {
@@ -41,9 +59,37 @@ const likertSelectOptions = LIKERT_OPTIONS.map((o) => ({
 
 export function AssessmentForm({
   source,
-  title = "Send the details",
-  subtitle = "Eight steps. We will follow up after we have reviewed your submission.",
+  title,
+  subtitle,
+  copy,
 }: AssessmentFormProps) {
+  const formTitle = copy?.formTitle || title || "Send the details";
+  const formSubtitle =
+    copy?.formSubtitle ||
+    subtitle ||
+    "Eight steps. We will follow up after we have reviewed your submission.";
+  const stepTitles = copy?.stepTitles?.length ? copy.stepTitles : [...STEP_TITLES];
+  const industryOptions = copy?.options?.industry?.length
+    ? copy.options.industry
+    : [...INDUSTRY_OPTIONS];
+  const revenueOptions = copy?.options?.revenue?.length
+    ? copy.options.revenue
+    : [...REVENUE_OPTIONS];
+  const employeeOptions = copy?.options?.employees?.length
+    ? copy.options.employees
+    : [...EMPLOYEE_OPTIONS];
+  const erpOptions = copy?.options?.erp?.length ? copy.options.erp : [...ERP_OPTIONS];
+  const metricsOptions = copy?.options?.metrics?.length
+    ? copy.options.metrics
+    : [...METRICS_OPTIONS];
+  const priorityOptions = copy?.options?.priorities?.length
+    ? copy.options.priorities
+    : [...PRIORITY_OPTIONS];
+  const challengeList = copy?.options?.challenges?.length
+    ? copy.options.challenges
+    : [...CHALLENGE_FIELDS];
+  const challengeA = challengeList.slice(0, 6);
+  const challengeB = challengeList.slice(6);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<AssessmentFormState>(emptyAssessmentForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -144,7 +190,7 @@ export function AssessmentForm({
     return (
       <div className="assess-form-wrap">
         <FormSuccess>
-          We&apos;ll be in touch within 2 business days.
+          {copy?.successMessage || "We'll be in touch within 2 business days."}
         </FormSuccess>
         <div className="assess-form__foot">
           <p className="meta">
@@ -165,11 +211,11 @@ export function AssessmentForm({
       <form className="form panel assess-form" onSubmit={onFormSubmit} noValidate>
         <div>
           <h2 className="h3" style={{ marginBottom: "var(--space-2)" }}>
-            {title}
+            {formTitle}
           </h2>
-          <p className="meta">{subtitle}</p>
+          <p className="meta">{formSubtitle}</p>
           <p className="tr-label u-mt6">
-            Step {step} of {TOTAL_STEPS} · {STEP_TITLES[step - 1]}
+            Step {step} of {TOTAL_STEPS} · {stepTitles[step - 1]}
           </p>
           <div className="assess-form__progress" aria-hidden="true">
             <i style={{ width: `${(step / TOTAL_STEPS) * 100}%` }} />
@@ -243,7 +289,7 @@ export function AssessmentForm({
             error={errors.industry}
             value={form.industry}
             onChange={(v) => setField("industry", v)}
-            options={INDUSTRY_OPTIONS}
+            options={industryOptions}
           />
           {form.industry === "Other" && (
             <Field
@@ -260,7 +306,7 @@ export function AssessmentForm({
             error={errors.annualRevenue}
             value={form.annualRevenue}
             onChange={(v) => setField("annualRevenue", v)}
-            options={REVENUE_OPTIONS}
+            options={revenueOptions}
           />
           <SelectField
             id="a-employees"
@@ -268,7 +314,7 @@ export function AssessmentForm({
             error={errors.employeeCount}
             value={form.employeeCount}
             onChange={(v) => setField("employeeCount", v)}
-            options={EMPLOYEE_OPTIONS}
+            options={employeeOptions}
           />
         </>
       )}
@@ -304,7 +350,7 @@ export function AssessmentForm({
 
       {step === 4 && (
         <div className="assess-form__stack">
-          {CHALLENGE_FIELDS_A.map((f) => (
+          {challengeA.map((f) => (
             <SelectField
               key={f.key}
               id={`a-${f.key}`}
@@ -322,7 +368,7 @@ export function AssessmentForm({
 
       {step === 5 && (
         <div className="assess-form__stack">
-          {CHALLENGE_FIELDS_B.map((f) => (
+          {challengeB.map((f) => (
             <SelectField
               key={f.key}
               id={`a-${f.key}`}
@@ -346,7 +392,7 @@ export function AssessmentForm({
             error={errors.erpSystem}
             value={form.erpSystem}
             onChange={(v) => setField("erpSystem", v)}
-            options={ERP_OPTIONS}
+            options={erpOptions}
           />
           {form.erpSystem === "Other" && (
             <Field
@@ -368,7 +414,7 @@ export function AssessmentForm({
           <fieldset className="assess-form__checks">
             <legend>Metrics Monitored <span className="u-tert">(optional)</span></legend>
             <div className="assess-form__checkgrid">
-              {METRICS_OPTIONS.map((opt) => (
+              {metricsOptions.map((opt) => (
                 <label key={opt} className="assess-form__check">
                   <input
                     type="checkbox"
@@ -417,7 +463,7 @@ export function AssessmentForm({
           <legend>Top Priorities</legend>
           <p className="hint">Select at least 3.</p>
           <div className="assess-form__checkgrid">
-            {PRIORITY_OPTIONS.map((opt) => (
+            {priorityOptions.map((opt) => (
               <label key={opt} className="assess-form__check">
                 <input
                   type="checkbox"
@@ -464,8 +510,8 @@ export function AssessmentForm({
           {step < TOTAL_STEPS
             ? "Next"
             : submitting
-              ? "Submitting..."
-              : "Request Access"}
+              ? copy?.submittingLabel || "Submitting..."
+              : copy?.submitLabel || "Request Access"}
         </button>
       </div>
       </form>

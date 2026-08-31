@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const SITE = "https://trooba.com";
 export const SITE_TITLE =
-  "Manufacturing Flow Optimization Software | Trooba Flow";
+  "AI-Powered Factory Flow Intelligence for Manufacturing | Trooba Flow";
 export const SITE_DESCRIPTION =
   "Trooba Flow helps manufacturers identify bottlenecks, reduce lead times, uncover hidden capacity, and test production changes before they affect the factory floor.";
 export const SITE_ICON = "/favicon.svg";
@@ -17,6 +17,7 @@ type PageMetaInput = {
   ogTitle?: string;
   ogDescription?: string;
   ogUrl?: string;
+  ogImage?: string;
   noIndex?: boolean;
 };
 
@@ -27,6 +28,11 @@ export function buildMetadata(input: PageMetaInput): Metadata {
   const ogTitle = input.ogTitle || title;
   const ogDescription = input.ogDescription || description;
   const ogUrl = (input.ogUrl || canonical).replace(/\.html$/, "").replace(/\/index$/, "/");
+  const ogImage = input.ogImage
+    ? /^https?:\/\//i.test(input.ogImage)
+      ? input.ogImage
+      : `${SITE}${input.ogImage.startsWith("/") ? "" : "/"}${input.ogImage}`
+    : OG_IMAGE;
 
   return {
     title,
@@ -38,7 +44,7 @@ export function buildMetadata(input: PageMetaInput): Metadata {
     keywords: [
       "Trooba",
       "Trooba Flow",
-      "manufacturing flow optimization software",
+      "AI-Powered Factory Flow Intelligence for Manufacturing",
       "Factory Flow Intelligence",
       "reduce lead time",
       "reduce WIP",
@@ -63,10 +69,10 @@ export function buildMetadata(input: PageMetaInput): Metadata {
       description: ogDescription,
       images: [
         {
-          url: OG_IMAGE,
+          url: ogImage,
           width: 1200,
           height: 630,
-          alt: "Trooba Flow — manufacturing flow optimization software",
+          alt: "Trooba Flow — AI-Powered Factory Flow Intelligence for Manufacturing",
         },
       ],
       locale: "en_US",
@@ -77,8 +83,8 @@ export function buildMetadata(input: PageMetaInput): Metadata {
       description: ogDescription,
       images: [
         {
-          url: OG_IMAGE,
-          alt: "Trooba Flow — manufacturing flow optimization software",
+          url: ogImage,
+          alt: "Trooba Flow — AI-Powered Factory Flow Intelligence for Manufacturing",
         },
       ],
     },

@@ -1,19 +1,19 @@
-import type { Metadata } from "next";
-import { HtmlMain } from "@/components/HtmlMain";
-import { SiteShell } from "@/components/SiteShell";
-import { aiCapabilities } from "@/content";
-import { buildMetadata } from "@/lib/seo";
+import { CmsHtmlPage, cmsMetadata } from "@/components/CmsHtmlPage";
 
-export const metadata: Metadata = buildMetadata({
-  ...aiCapabilities.meta,
-  canonical: "https://trooba.com/ai-capabilities",
-  ogUrl: "https://trooba.com/ai-capabilities",
-});
+export const generateMetadata = () =>
+  cmsMetadata(
+    "ai-capabilities",
+    "https://trooba.com/ai-capabilities",
+    "https://trooba.com/ai-capabilities",
+  );
 
 export default function AiCapabilitiesPage() {
   return (
-    <SiteShell current="ai-capabilities">
-      <HtmlMain html={aiCapabilities.mainHtml} />
-    </SiteShell>
+    <CmsHtmlPage
+      slug="ai-capabilities"
+      current="ai-capabilities"
+      canonical="https://trooba.com/ai-capabilities"
+      ogUrl="https://trooba.com/ai-capabilities"
+    />
   );
 }

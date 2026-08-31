@@ -1,19 +1,14 @@
-import type { Metadata } from "next";
-import { HtmlMain } from "@/components/HtmlMain";
-import { SiteShell } from "@/components/SiteShell";
-import { home } from "@/content";
-import { buildMetadata } from "@/lib/seo";
+import { CmsHtmlPage, cmsMetadata } from "@/components/CmsHtmlPage";
 
-export const metadata: Metadata = buildMetadata({
-  ...home.meta,
-  canonical: "https://trooba.com/",
-  ogUrl: "https://trooba.com/",
-});
+export const generateMetadata = () =>
+  cmsMetadata("home", "https://trooba.com/", "https://trooba.com/");
 
 export default function HomePage() {
   return (
-    <SiteShell>
-      <HtmlMain html={home.mainHtml} />
-    </SiteShell>
+    <CmsHtmlPage
+      slug="home"
+      canonical="https://trooba.com/"
+      ogUrl="https://trooba.com/"
+    />
   );
 }

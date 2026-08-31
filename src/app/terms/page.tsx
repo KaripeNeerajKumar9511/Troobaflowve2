@@ -1,19 +1,14 @@
-import type { Metadata } from "next";
-import { HtmlMain } from "@/components/HtmlMain";
-import { SiteShell } from "@/components/SiteShell";
-import { terms } from "@/content";
-import { buildMetadata } from "@/lib/seo";
+import { CmsHtmlPage, cmsMetadata } from "@/components/CmsHtmlPage";
 
-export const metadata: Metadata = buildMetadata({
-  ...terms.meta,
-  canonical: "https://trooba.com/terms",
-  ogUrl: "https://trooba.com/terms",
-});
+export const generateMetadata = () =>
+  cmsMetadata("terms", "https://trooba.com/terms", "https://trooba.com/terms");
 
 export default function TermsPage() {
   return (
-    <SiteShell>
-      <HtmlMain html={terms.mainHtml} />
-    </SiteShell>
+    <CmsHtmlPage
+      slug="terms"
+      canonical="https://trooba.com/terms"
+      ogUrl="https://trooba.com/terms"
+    />
   );
 }

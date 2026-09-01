@@ -18,8 +18,35 @@ type PageMetaInput = {
   ogDescription?: string;
   ogUrl?: string;
   ogImage?: string;
+  keywords?: string | string[];
+  type?: "website" | "article";
   noIndex?: boolean;
 };
+
+const DEFAULT_KEYWORDS = [
+  "Trooba",
+  "Trooba Flow",
+  "AI-Powered Factory Flow Intelligence for Manufacturing",
+  "Factory Flow Intelligence",
+  "reduce lead time",
+  "reduce WIP",
+  "reduce bottlenecks",
+  "hidden capacity",
+  "Queueing Theory",
+  "QRM",
+  "Quick Response Manufacturing",
+  "manufacturing lead time",
+  "bottlenecks",
+  "WIP",
+];
+
+function keywordList(input?: string | string[]): string[] {
+  if (!input) return DEFAULT_KEYWORDS;
+  const extra = Array.isArray(input)
+    ? input
+    : input.split(",").map((part) => part.trim()).filter(Boolean);
+  return [...new Set([...extra, ...DEFAULT_KEYWORDS])];
+}
 
 export function buildMetadata(input: PageMetaInput): Metadata {
   const title = input.title;
@@ -41,28 +68,13 @@ export function buildMetadata(input: PageMetaInput): Metadata {
     creator: AUTHOR,
     publisher: AUTHOR,
     applicationName: "Trooba Flow",
-    keywords: [
-      "Trooba",
-      "Trooba Flow",
-      "AI-Powered Factory Flow Intelligence for Manufacturing",
-      "Factory Flow Intelligence",
-      "reduce lead time",
-      "reduce WIP",
-      "reduce bottlenecks",
-      "hidden capacity",
-      "Queueing Theory",
-      "QRM",
-      "Quick Response Manufacturing",
-      "manufacturing lead time",
-      "bottlenecks",
-      "WIP",
-    ],
+    keywords: keywordList(input.keywords),
     alternates: { canonical },
     robots: input.noIndex
       ? { index: false, follow: true }
       : { index: true, follow: true },
     openGraph: {
-      type: "website",
+      type: input.type || "website",
       siteName: "Trooba Flow",
       url: ogUrl,
       title: ogTitle,

@@ -136,7 +136,7 @@ export const mainHtml = `<section class="hero about-hero">
   </div>
 </section>
 
-<section class="section section--ruled">
+<section class="section section--ruled" id="team">
   <div class="wrap">
     <div class="about-team reveal">
       <p class="tr-label u-accent">Our team</p>

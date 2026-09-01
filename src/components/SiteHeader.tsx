@@ -4,6 +4,8 @@ import type { NavItem, SiteBundle } from "@/lib/cms";
 export type NavCurrent =
   | "how-it-works"
   | "proof"
+  | "blog"
+  | "blogs"
   | "about"
   | "solutions"
   | "ai-capabilities"

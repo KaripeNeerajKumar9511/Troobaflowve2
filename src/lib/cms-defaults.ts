@@ -6,6 +6,7 @@ export const DEFAULT_NAV = [
     current: "proof",
     mobileLabel: "Proof",
   },
+  { label: "Blogs", href: "/blog", current: "blog" },
   { label: "About", href: "/about", current: "about" },
   { label: "Solutions", href: "/solutions", current: "solutions" },
   {
@@ -29,6 +30,7 @@ export const DEFAULT_FOOTER = {
         { label: "Solutions", href: "/solutions" },
         { label: "AI Capabilities", href: "/ai-capabilities" },
         { label: "Proof", href: "/proof" },
+        { label: "Blogs", href: "/blog" },
         { label: "Request a Flow Analysis", href: "/flow-analysis" },
       ],
     },

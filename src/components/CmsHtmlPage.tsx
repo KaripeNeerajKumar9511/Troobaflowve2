@@ -3,7 +3,7 @@ import { HtmlMain } from "@/components/HtmlMain";
 import { SiteShell } from "@/components/SiteShell";
 import { type NavCurrent } from "@/components/SiteHeader";
 import { buildMetadata } from "@/lib/seo";
-import { getPage, getSite, injectCaseStudies, injectSolutions, injectTeamHtml } from "@/lib/cms";
+import { getBlogs, getPage, getSite, injectCaseStudies, injectHomeBlogs, injectSolutions, injectTeamHtml } from "@/lib/cms";
 
 export async function cmsMetadata(
   slug: string,
@@ -34,11 +34,16 @@ export async function CmsHtmlPage({
   canonical: string;
   ogUrl: string;
 }) {
-  const [page, site] = await Promise.all([getPage(slug), getSite()]);
+  const [page, site, blogs] = await Promise.all([
+    getPage(slug),
+    getSite(),
+    slug === "home" ? getBlogs() : Promise.resolve([]),
+  ]);
   let html = page.main_html;
   if (slug === "about") html = injectTeamHtml(html, site.team);
   if (slug === "proof") html = injectCaseStudies(html, site.case_studies);
   if (slug === "solutions") html = injectSolutions(html, site.solutions);
+  if (slug === "home") html = injectHomeBlogs(html, blogs);
   void canonical;
   void ogUrl;
   return (

@@ -38,6 +38,22 @@ const nextConfig: NextConfig = {
       { source: "/privacy.html", destination: "/privacy", permanent: true },
       { source: "/terms.html", destination: "/terms", permanent: true },
       { source: "/contact.html", destination: "/contact", permanent: true },
+      { source: "/blog.html", destination: "/blog", permanent: true },
+      {
+        source: "/why-high-utilization-increases-lead-time",
+        destination: "/blog/why-high-utilization-increases-lead-time",
+        permanent: true,
+      },
+      {
+        source: "/manufacturing-lead-time-waiting-not-processing",
+        destination: "/blog/manufacturing-lead-time-waiting-not-processing",
+        permanent: true,
+      },
+      {
+        source: "/manufacturing-critical-path-time-mct",
+        destination: "/blog/manufacturing-critical-path-time-mct",
+        permanent: true,
+      },
     ];
   },
 };

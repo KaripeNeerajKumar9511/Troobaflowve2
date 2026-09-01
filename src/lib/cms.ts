@@ -8,6 +8,7 @@ import {
   solutions,
   terms,
 } from "@/content";
+import { FALLBACK_BLOGS } from "@/content/blogs";
 import {
   DEFAULT_FOOTER,
   DEFAULT_NAV,
@@ -49,6 +50,7 @@ export type SiteBundle = {
   team?: TeamMember[];
   case_studies?: CmsCase[];
   solutions?: CmsSolution[];
+  blogs?: CmsBlog[];
 };
 
 export type TeamMember = {
@@ -69,6 +71,23 @@ export type CmsCase = {
   image_alt?: string;
   facts?: { dt?: string; dd?: string }[];
   body_html?: string;
+};
+
+export type CmsBlog = {
+  id?: number;
+  slug: string;
+  title: string;
+  dek?: string;
+  category?: string;
+  author?: string;
+  published_at?: string | null;
+  read_time?: string;
+  cover_url?: string;
+  cover_alt?: string;
+  body_html?: string;
+  seo?: Record<string, string>;
+  is_published?: boolean;
+  sort_order?: number;
 };
 
 export type CmsSolution = {
@@ -139,6 +158,7 @@ export async function getSite(): Promise<SiteBundle> {
     footer: { ...FALLBACK_SITE.footer, ...data.footer },
     typography: { ...FALLBACK_SITE.typography, ...data.typography },
     logo_url: data.logo_url || FALLBACK_SITE.logo_url,
+    blogs: data.blogs?.length ? data.blogs : FALLBACK_BLOGS.map((row) => toCmsBlog(row)),
   };
 }
 
@@ -157,6 +177,34 @@ export async function getPage(slug: string): Promise<CmsPage> {
     fields: { ...(fallback.fields || {}), ...(data.fields || {}) },
     main_html: data.main_html || fallback.main_html,
   };
+}
+
+function toCmsBlog(row: (typeof FALLBACK_BLOGS)[number], body = ""): CmsBlog {
+  return {
+    slug: row.slug,
+    title: row.title,
+    dek: row.dek,
+    category: row.category,
+    author: row.author,
+    published_at: row.published_at,
+    read_time: row.read_time,
+    body_html: body,
+    seo: { ...row.seo },
+    is_published: true,
+  };
+}
+
+export async function getBlogs(): Promise<CmsBlog[]> {
+  const data = await cmsFetch<CmsBlog[]>("/api/public/blogs/");
+  if (data?.length) return data;
+  return FALLBACK_BLOGS.map((row) => toCmsBlog(row));
+}
+
+export async function getBlog(slug: string): Promise<CmsBlog | null> {
+  const data = await cmsFetch<CmsBlog>(`/api/public/blogs/${slug}/`);
+  if (data?.slug) return data;
+  const fallback = FALLBACK_BLOGS.find((row) => row.slug === slug);
+  return fallback ? toCmsBlog(fallback) : null;
 }
 
 export function typographyCss(ty: SiteBundle["typography"]): string {
@@ -196,7 +244,17 @@ export function typographyCss(ty: SiteBundle["typography"]): string {
 }
 
 export function injectTeamHtml(html: string, team: TeamMember[] | undefined): string {
-  if (!team?.length || !html.includes("about-team__grid")) return html;
+  let next = html;
+  if (next.includes("about-team") && !/\sid=["']team["']/.test(next)) {
+    next = next.replace(
+      /(<section class="section section--ruled")(>\s*<div class="wrap">\s*<div class="about-team)/,
+      '$1 id="team"$2',
+    );
+    if (!/\sid=["']team["']/.test(next)) {
+      next = next.replace(/<div class="about-team/, '<div id="team" class="about-team');
+    }
+  }
+  if (!team?.length || !next.includes("about-team__grid")) return next;
   const items = team
     .map(
       (m) => `<li>
@@ -212,7 +270,7 @@ export function injectTeamHtml(html: string, team: TeamMember[] | undefined): st
       </li>`,
     )
     .join("");
-  return html.replace(
+  return next.replace(
     /<ul class="about-team__grid">[\s\S]*?<\/ul>/,
     `<ul class="about-team__grid">${items}</ul>`,
   );
@@ -364,6 +422,61 @@ export function injectSolutions(html: string, cards: CmsSolution[] | undefined):
     );
   }
   return next;
+}
+
+function formatBlogDate(value?: string | null): string {
+  if (!value) return "";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function homeBlogCards(posts: CmsBlog[]): string {
+  return posts
+    .slice(0, 3)
+    .map((post) => {
+      const meta = [post.read_time, formatBlogDate(post.published_at)]
+        .filter(Boolean)
+        .join(" · ");
+      return `<a class="blog-card" href="/blog/${escapeAttr(post.slug)}">
+        <p class="blog-card__meta"><span class="blog-card__tag">${escapeHtml(post.category || "Insights")}</span><span>${escapeHtml(meta)}</span></p>
+        <h3 class="h3">${escapeHtml(post.title)}</h3>
+        <p class="body">${escapeHtml(post.dek || "")}</p>
+        <span class="link">Read article <span class="arw" aria-hidden="true">→</span></span>
+      </a>`;
+    })
+    .join("");
+}
+
+export function injectHomeBlogs(html: string, posts: CmsBlog[] | undefined): string {
+  if (!posts?.length) return html;
+  const section = `<section class="section section--ruled" id="insights">
+  <div class="container-fluid">
+    <div class="reveal" style="max-width:52ch">
+      <h2 class="section-title">How factories actually lose time.</h2>
+      <p class="lead u-mt6">Queueing, utilisation, and manufacturing critical-path time — written for people who run plants.</p>
+    </div>
+    <div class="blog-index u-mt10 reveal">${homeBlogCards(posts)}</div>
+    <p class="u-mt8"><a class="link" href="/blog">All articles <span class="arw" aria-hidden="true">→</span></a></p>
+  </div>
+</section>
+`;
+  if (html.includes('id="insights"')) {
+    return html.replace(
+      /<section[^>]*id="insights"[\s\S]*?<\/section>/,
+      section.trim(),
+    );
+  }
+  const marker = '<section class="section section--ruled">\n  <div class="container-fluid">\n    <div class="reveal" style="max-width:52ch">\n      <h2 class="section-title">See how work really flows through your factory.';
+  const idx = html.indexOf(marker);
+  if (idx !== -1) return html.slice(0, idx) + section + html.slice(idx);
+  const last = html.lastIndexOf('<section class="section section--ruled">');
+  if (last === -1) return html + section;
+  return html.slice(0, last) + section + html.slice(last);
 }
 
 function escapeHtml(value: string): string {

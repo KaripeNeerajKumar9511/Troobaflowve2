@@ -88,7 +88,10 @@ function NavLink({
   current: NavCurrent;
   mobile?: boolean;
 }) {
-  const active = current && item.current === current;
+  const active =
+    !!current &&
+    (item.current === current ||
+      (current === "blog" && (item.href === "/blog" || item.current === "blogs")));
   return (
     <Link
       href={item.href}

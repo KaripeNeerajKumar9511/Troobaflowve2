@@ -59,8 +59,8 @@ export async function POST(request: Request) {
   }
 
   try {
-    await persistLead("contact", form);
     const { messageId } = await sendContactEmail(form);
+    await persistLead("contact", { ...form, message_id: messageId });
     return NextResponse.json({ success: true, messageId });
   } catch (err) {
     const message =

@@ -98,6 +98,20 @@ function pickIcon(title: string): string {
   if (t.includes("target") || t.includes("defend")) return ICONS.target;
   if (t.includes("test") || t.includes("model") || t.includes("change"))
     return ICONS.flask;
+  if (t.includes("release") || t.includes("earlier")) return ICONS.flag;
+  if (t.includes("safety") || t.includes("buffer")) return ICONS.ruler;
+  if (t.includes("busy") || t.includes("machine")) return ICONS.gauge;
+  if (t.includes("priorit")) return ICONS.decision;
+  if (t.includes("elapsed") || t.includes("timing")) return ICONS.calendar;
+  if (t.includes("routing") || t.includes("map the")) return ICONS.route;
+  if (t.includes("pair") || t.includes("variability")) return ICONS.wave;
+  if (t.includes("examine") || t.includes("queue decision")) return ICONS.search;
+  if (t.includes("system level") || t.includes("spiral")) return ICONS.rework;
+  if (t.includes("throughput")) return ICONS.chart;
+  if (t.includes("rearrangement")) return ICONS.adjust;
+  if (t.includes("where work waits") || t.includes("wait")) return ICONS.queue;
+  if (t.includes("which resource")) return ICONS.search;
+  if (t.includes("arrival") || t.includes("process var")) return ICONS.wave;
   return ICONS.chart;
 }
 
@@ -130,7 +144,7 @@ export function prepareBlogHtml(html: string): string {
       return `<h2${attrs} id="${id}">${inner}</h2>`;
     },
   );
-  return withIds.replace(
+  const withIcons = withIds.replace(
     /<div class="blog-icon"[^>]*>([\s\S]*?)<\/div>/g,
     (_full, inner: string) => {
       const h5 = inner.match(/<h5>([\s\S]*?)<\/h5>/i);
@@ -145,6 +159,13 @@ export function prepareBlogHtml(html: string): string {
         : mark + inner;
       return `<div class="blog-icon">${next}</div>`;
     },
+  );
+  return withIcons.replace(
+    /<table class="tbl blog-table"[\s\S]*?<\/table>/gi,
+    (table) =>
+      table.includes("tbl-scroll")
+        ? table
+        : `<div class="tbl-scroll blog-table-scroll">${table}</div>`,
   );
 }
 

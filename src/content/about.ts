@@ -179,7 +179,7 @@ export const mainHtml = `<section class="hero about-hero">
       <li class="reveal">
         <figure class="about-team__photo">
           <div class="about-team__frame">
-            <img src="/assets/Team_images/Shakthi.png" alt="Shakti Sharma, Business Development Manager of Trooba" width="400" height="400">
+            <img src="/assets/Team_images/shakthi.png" alt="Shakti Sharma, Business Development Manager of Trooba" width="400" height="400">
           </div>
           <figcaption>
             <span class="about-team__name">Shakti Sharma</span>
@@ -223,7 +223,7 @@ export const mainHtml = `<section class="hero about-hero">
       <li class="reveal">
         <figure class="about-team__photo">
           <div class="about-team__frame">
-            <img src="/assets/Team_images/Akanksha.jpeg" alt="Guntuku Akanksha, People Operational Manager of Trooba" width="400" height="400">
+            <img src="/assets/Team_images/akanksha.jpeg" alt="Guntuku Akanksha, People Operational Manager of Trooba" width="400" height="400">
           </div>
           <figcaption>
             <span class="about-team__name">Guntuku Akanksha</span>

@@ -99,12 +99,14 @@ export function SiteBehaviors() {
               }
             });
           },
-          { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+          { rootMargin: "0px 0px -40px 0px", threshold: 0.01 },
         );
         targets.forEach((el) => io.observe(el));
         cleanups.push(() => io.disconnect());
       }
     }
+
+    document.documentElement.classList.add("js");
 
     /* -- 3. Scenario state -------------------------------------------------- */
     document.querySelectorAll("[data-scene]").forEach((scene) => {

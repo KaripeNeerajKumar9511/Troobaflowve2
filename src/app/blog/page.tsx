@@ -1,19 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { BlogCard } from "@/components/BlogCard";
 import { SiteShell } from "@/components/SiteShell";
-import { type CmsBlog, getBlogs } from "@/lib/cms";
+import { getBlogs } from "@/lib/cms";
 import { SITE, buildMetadata, jsonLd } from "@/lib/seo";
-
-function formatDate(value?: string | null): string {
-  if (!value) return "";
-  const date = new Date(`${value}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata({
@@ -44,6 +33,7 @@ export default async function BlogIndexPage() {
       description: post.dek,
       url: `${SITE}/blog/${post.slug}`,
       datePublished: post.published_at || undefined,
+      image: post.cover_url || undefined,
     })),
   };
 
@@ -71,7 +61,7 @@ export default async function BlogIndexPage() {
             {posts.length ? (
               <div className="blog-index">
                 {posts.map((post) => (
-                  <BlogCard key={post.slug} post={post} />
+                  <BlogCard key={post.slug} post={post} heading="h2" />
                 ))}
               </div>
             ) : (
@@ -81,24 +71,5 @@ export default async function BlogIndexPage() {
         </section>
       </main>
     </SiteShell>
-  );
-}
-
-function BlogCard({ post }: { post: CmsBlog }) {
-  const meta = [post.read_time, formatDate(post.published_at)]
-    .filter(Boolean)
-    .join(" · ");
-  return (
-    <Link className="blog-card" href={`/blog/${post.slug}`}>
-      <p className="blog-card__meta">
-        <span className="blog-card__tag">{post.category || "Insights"}</span>
-        {meta ? <span>{meta}</span> : null}
-      </p>
-      <h2 className="h3">{post.title}</h2>
-      {post.dek ? <p className="body">{post.dek}</p> : null}
-      <span className="link">
-        Read article <span className="arw" aria-hidden="true">→</span>
-      </span>
-    </Link>
   );
 }

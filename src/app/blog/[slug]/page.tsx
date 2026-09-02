@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BlogCard } from "@/components/BlogCard";
 import { BlogToc } from "@/components/BlogToc";
 import { SiteShell } from "@/components/SiteShell";
-import { type CmsBlog, getBlog, getBlogs } from "@/lib/cms";
+import { getBlog, getBlogs, relatedBlogs } from "@/lib/cms";
 import { prepareBlogHtml, tocFromHtml } from "@/lib/blog-html";
 import { SITE, buildMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -35,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ogTitle: seo.ogTitle || seo.title || post.title,
     ogDescription: seo.ogDescription || seo.description || post.dek || "",
     ogUrl: seo.ogUrl || url,
-    ogImage: seo.ogImage,
+    ogImage: seo.ogImage || post.cover_url,
     keywords: seo.keywords,
     type: "article",
   });
@@ -52,7 +55,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) notFound();
   const body = prepareBlogHtml(post.body_html || "");
   const toc = tocFromHtml(body);
-  const related = all.filter((row) => row.slug !== post.slug).slice(0, 2);
+  const related = relatedBlogs(all, post.slug);
   const url = `${SITE}/blog/${post.slug}`;
   const seo = post.seo || {};
   const articleLd = {
@@ -65,7 +68,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     publisher: { "@id": `${SITE}/#organization` },
     mainEntityOfPage: url,
     keywords: seo.keywords || undefined,
-    image: seo.ogImage || `${SITE}/og-banner.png`,
+    image: seo.ogImage || post.cover_url || `${SITE}/og-banner.png`,
   };
 
   return (
@@ -129,7 +132,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <h2 className="h3">More from the blogs</h2>
               <div className="blog-index blog-index--related u-mt8">
                 {related.map((row) => (
-                  <RelatedCard key={row.slug} post={row} />
+                  <BlogCard key={row.slug} post={row} showDate={false} />
                 ))}
               </div>
             </div>
@@ -140,18 +143,3 @@ export default async function BlogPostPage({ params }: PageProps) {
   );
 }
 
-function RelatedCard({ post }: { post: CmsBlog }) {
-  return (
-    <Link className="blog-card" href={`/blog/${post.slug}`}>
-      <p className="blog-card__meta">
-        <span className="blog-card__tag">{post.category || "Insights"}</span>
-        {post.read_time ? <span>{post.read_time}</span> : null}
-      </p>
-      <h3 className="h3">{post.title}</h3>
-      {post.dek ? <p className="body">{post.dek}</p> : null}
-      <span className="link">
-        Read article <span className="arw" aria-hidden="true">→</span>
-      </span>
-    </Link>
-  );
-}

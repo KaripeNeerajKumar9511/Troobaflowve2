@@ -45,11 +45,6 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js')",
-          }}
-        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -67,18 +62,22 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body>
         {children}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-6EGGF1QSM3"
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-6EGGF1QSM3');
-          `}
-        </Script>
+        {process.env.NODE_ENV === "production" ? (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-6EGGF1QSM3"
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-6EGGF1QSM3');
+              `}
+            </Script>
+          </>
+        ) : null}
       </body>
     </html>
   );

@@ -38,8 +38,14 @@ export async function handleAssessmentPost(
   }
 
   try {
-    await persistLead("request", { payload: form, ...form });
     const { messageId } = await sendAssessmentEmail(form, source);
+    await persistLead("request", {
+      name: form.name,
+      email: form.email,
+      company: form.company,
+      payload: form,
+      message_id: messageId,
+    });
     return NextResponse.json({ success: true, messageId });
   } catch (err) {
     const message =

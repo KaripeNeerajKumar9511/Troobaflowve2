@@ -15,10 +15,14 @@ import {
   DEFAULT_TYPOGRAPHY,
 } from "./cms-defaults";
 
-const API =
+const API = (
   process.env.BACKEND_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8000";
+  "http://127.0.0.1:8000"
+).replace(/localhost/g, "127.0.0.1");
+
+const BLOG_NAV: NavItem = { label: "Blogs", href: "/blog", current: "blog" };
+const BLOG_FOOTER_LINK = { label: "Blogs", href: "/blog" };
 
 export type NavItem = {
   label: string;
@@ -143,9 +147,40 @@ async function cmsFetch<T>(path: string): Promise<T | null> {
     const res = await fetch(`${API}${path}`, { next: { revalidate: 30 } });
     if (!res.ok) return null;
     return (await res.json()) as T;
-  } catch {
+  } catch (err) {
+    console.error(`[cms] ${API}${path} failed:`, err);
     return null;
   }
+}
+
+function withBlogNav(nav: NavItem[]): NavItem[] {
+  const items = nav.map((item) =>
+    item.href === "/blog" ? { ...BLOG_NAV, ...item, label: item.label || "Blogs" } : item,
+  );
+  if (items.some((item) => item.href === "/blog")) return items;
+  const proofIdx = items.findIndex((item) => item.href === "/proof");
+  if (proofIdx >= 0) {
+    return [...items.slice(0, proofIdx + 1), { ...BLOG_NAV }, ...items.slice(proofIdx + 1)];
+  }
+  return [...items, { ...BLOG_NAV }];
+}
+
+function withBlogFooter(footer: SiteBundle["footer"]): SiteBundle["footer"] {
+  const columns = (footer.columns || []).map((col) => {
+    const links = (col.links || []).map((link) =>
+      link.href === "/blog" ? { ...link, label: link.label || "Blogs" } : link,
+    );
+    if (col.heading !== "Trooba Flow" || links.some((link) => link.href === "/blog")) {
+      return { ...col, links };
+    }
+    const proofIdx = links.findIndex((link) => link.href === "/proof");
+    const next =
+      proofIdx >= 0
+        ? [...links.slice(0, proofIdx + 1), { ...BLOG_FOOTER_LINK }, ...links.slice(proofIdx + 1)]
+        : [...links, { ...BLOG_FOOTER_LINK }];
+    return { ...col, links: next };
+  });
+  return { ...footer, columns };
 }
 
 export async function getSite(): Promise<SiteBundle> {
@@ -154,8 +189,8 @@ export async function getSite(): Promise<SiteBundle> {
   return {
     ...FALLBACK_SITE,
     ...data,
-    nav: data.nav?.length ? data.nav : FALLBACK_SITE.nav,
-    footer: { ...FALLBACK_SITE.footer, ...data.footer },
+    nav: withBlogNav(data.nav?.length ? data.nav : FALLBACK_SITE.nav),
+    footer: withBlogFooter({ ...FALLBACK_SITE.footer, ...data.footer }),
     typography: { ...FALLBACK_SITE.typography, ...data.typography },
     logo_url: data.logo_url || FALLBACK_SITE.logo_url,
     blogs: data.blogs?.length ? data.blogs : FALLBACK_BLOGS.map((row) => toCmsBlog(row)),
@@ -188,21 +223,43 @@ function toCmsBlog(row: (typeof FALLBACK_BLOGS)[number], body = ""): CmsBlog {
     author: row.author,
     published_at: row.published_at,
     read_time: row.read_time,
+    cover_url: row.cover_url,
+    cover_alt: row.cover_alt,
     body_html: body,
     seo: { ...row.seo },
     is_published: true,
   };
 }
 
+export function relatedBlogs(all: CmsBlog[], slug: string, count = 3): CmsBlog[] {
+  const pool = all.filter((row) => row.slug !== slug);
+  for (let i = pool.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, count);
+}
+
+function withFallbackCover(post: CmsBlog): CmsBlog {
+  const fb = FALLBACK_BLOGS.find((row) => row.slug === post.slug);
+  if (!fb) return post;
+  return {
+    ...post,
+    cover_url: post.cover_url || fb.cover_url,
+    cover_alt: post.cover_alt || fb.cover_alt,
+    seo: { ...fb.seo, ...(post.seo || {}) },
+  };
+}
+
 export async function getBlogs(): Promise<CmsBlog[]> {
   const data = await cmsFetch<CmsBlog[]>("/api/public/blogs/");
-  if (data?.length) return data;
+  if (data?.length) return data.map(withFallbackCover);
   return FALLBACK_BLOGS.map((row) => toCmsBlog(row));
 }
 
 export async function getBlog(slug: string): Promise<CmsBlog | null> {
   const data = await cmsFetch<CmsBlog>(`/api/public/blogs/${slug}/`);
-  if (data?.slug) return data;
+  if (data?.slug) return withFallbackCover(data);
   const fallback = FALLBACK_BLOGS.find((row) => row.slug === slug);
   return fallback ? toCmsBlog(fallback) : null;
 }
@@ -442,11 +499,17 @@ function homeBlogCards(posts: CmsBlog[]): string {
       const meta = [post.read_time, formatBlogDate(post.published_at)]
         .filter(Boolean)
         .join(" · ");
+      const cover = post.cover_url
+        ? `<span class="blog-card__media"><img src="${escapeAttr(post.cover_url)}" alt="${escapeAttr(post.cover_alt || post.title)}"></span>`
+        : "";
       return `<a class="blog-card" href="/blog/${escapeAttr(post.slug)}">
+        ${cover}
+        <span class="blog-card__copy">
         <p class="blog-card__meta"><span class="blog-card__tag">${escapeHtml(post.category || "Insights")}</span><span>${escapeHtml(meta)}</span></p>
         <h3 class="h3">${escapeHtml(post.title)}</h3>
         <p class="body">${escapeHtml(post.dek || "")}</p>
         <span class="link">Read article <span class="arw" aria-hidden="true">→</span></span>
+        </span>
       </a>`;
     })
     .join("");
@@ -460,23 +523,24 @@ export function injectHomeBlogs(html: string, posts: CmsBlog[] | undefined): str
       <h2 class="section-title">How factories actually lose time.</h2>
       <p class="lead u-mt6">Queueing, utilisation, and manufacturing critical-path time — written for people who run plants.</p>
     </div>
-    <div class="blog-index u-mt10 reveal">${homeBlogCards(posts)}</div>
+    <div class="blog-index u-mt10">${homeBlogCards(posts)}</div>
     <p class="u-mt8"><a class="link" href="/blog">All articles <span class="arw" aria-hidden="true">→</span></a></p>
   </div>
 </section>
 `;
-  if (html.includes('id="insights"')) {
-    return html.replace(
+  const normalized = html.replace(/\r\n/g, "\n");
+  if (normalized.includes('id="insights"')) {
+    return normalized.replace(
       /<section[^>]*id="insights"[\s\S]*?<\/section>/,
       section.trim(),
     );
   }
   const marker = '<section class="section section--ruled">\n  <div class="container-fluid">\n    <div class="reveal" style="max-width:52ch">\n      <h2 class="section-title">See how work really flows through your factory.';
-  const idx = html.indexOf(marker);
-  if (idx !== -1) return html.slice(0, idx) + section + html.slice(idx);
-  const last = html.lastIndexOf('<section class="section section--ruled">');
-  if (last === -1) return html + section;
-  return html.slice(0, last) + section + html.slice(last);
+  const idx = normalized.indexOf(marker);
+  if (idx !== -1) return normalized.slice(0, idx) + section + normalized.slice(idx);
+  const last = normalized.lastIndexOf('<section class="section section--ruled">');
+  if (last === -1) return normalized + section;
+  return normalized.slice(0, last) + section + normalized.slice(last);
 }
 
 function escapeHtml(value: string): string {
@@ -494,13 +558,15 @@ export async function persistLead(
   kind: "contact" | "request",
   body: unknown,
 ): Promise<void> {
-  try {
-    await fetch(`${API}/api/public/leads/${kind}/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-  } catch (err) {
-    console.error(`[cms] persist ${kind} failed:`, err);
+  const res = await fetch(`${API}/api/public/leads/${kind}/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(
+      `Could not save the submission to the admin panel (${res.status})${text ? `: ${text.slice(0, 180)}` : ""}`,
+    );
   }
 }

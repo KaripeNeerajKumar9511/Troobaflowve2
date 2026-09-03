@@ -232,7 +232,7 @@ function FormFoot({ copy }: { copy?: ContactCopy }) {
     <div className="assess-form__foot">
       <p className="meta">
         {copy?.loginHtml || "Already have an account?"}{" "}
-        <a href={copy?.loginHref || "https://gotrooba.ai"}>
+        <a href={copy?.loginHref || "https://app.trooba.com"}>
           {copy?.loginLabel || "Login."}
         </a>
       </p>

@@ -89,7 +89,7 @@ export function NewsletterBar() {
             </svg>
           </span>
           <div>
-            <p className="nl-bar__kicker">Trooba Insights</p>
+            <p className="nl-bar__kicker">Trooba Flow Insights</p>
             <p className="nl-bar__title">Get the latest manufacturing insights in your inbox.</p>
             <p className="nl-bar__sub">
               Industry trends, case studies, product updates and expert tips — straight to your inbox.

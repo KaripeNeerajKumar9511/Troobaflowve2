@@ -574,6 +574,7 @@ export async function persistLead(
 export type NewsletterPersistResult = {
   already_subscribed?: boolean;
   already_unsubscribed?: boolean;
+  welcome_back?: boolean;
   email?: string;
   name?: string;
   status?: string;

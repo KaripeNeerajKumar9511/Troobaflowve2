@@ -47,6 +47,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       already: Boolean(saved.already_subscribed),
+      welcome_back: Boolean(saved.welcome_back),
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to subscribe";

@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const DISMISS_KEY = "trooba_nl_bar_closed";
 
 export function NewsletterBar() {
   const pathname = usePathname();
@@ -13,22 +12,9 @@ export function NewsletterBar() {
   const [infoOpen, setInfoOpen] = useState(false);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
-  const [done, setDone] = useState(false);
+  const [status, setStatus] = useState<"new" | "already" | "back" | null>(null);
   const [dismissed, setDismissed] = useState(false);
-  const [ready, setReady] = useState(false);
   const onHome = pathname === "/";
-
-  useEffect(() => {
-    if (!onHome) {
-      setReady(true);
-      return;
-    }
-    const closed = window.localStorage.getItem(DISMISS_KEY) === "1";
-    const forceOpen = window.location.hash === "#newsletter";
-    if (forceOpen) window.localStorage.removeItem(DISMISS_KEY);
-    setDismissed(closed && !forceOpen);
-    setReady(true);
-  }, [onHome]);
 
   useEffect(() => {
     if (!onHome || dismissed) {
@@ -39,10 +25,9 @@ export function NewsletterBar() {
     return () => document.body.classList.remove("has-nl-bar");
   }, [onHome, dismissed]);
 
-  if (!onHome || !ready || dismissed) return null;
+  if (!onHome || dismissed) return null;
 
   const closeBar = () => {
-    window.localStorage.setItem(DISMISS_KEY, "1");
     setInfoOpen(false);
     setDismissed(true);
   };
@@ -65,11 +50,16 @@ export function NewsletterBar() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: name.trim(), email: email.trim() }),
       });
-      const data = (await res.json()) as { success?: boolean; error?: string };
+      const data = (await res.json()) as {
+        success?: boolean;
+        error?: string;
+        already?: boolean;
+        welcome_back?: boolean;
+      };
       if (!res.ok || !data.success) {
         throw new Error(data.error || "Could not subscribe.");
       }
-      setDone(true);
+      setStatus(data.already ? "already" : data.welcome_back ? "back" : "new");
       setInfoOpen(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not subscribe.");
@@ -77,6 +67,13 @@ export function NewsletterBar() {
       setSending(false);
     }
   };
+
+  const doneCopy =
+    status === "already"
+      ? "You're already subscribed to Trooba Flow Insights."
+      : status === "back"
+        ? "Welcome back — you're subscribed to Trooba Flow Insights again."
+        : "You're subscribed to Trooba Flow Insights. Check your inbox.";
 
   return (
     <div className="nl-bar" id="newsletter">
@@ -97,9 +94,9 @@ export function NewsletterBar() {
           </div>
         </div>
 
-        {done ? (
+        {status ? (
           <p className="nl-bar__done" role="status">
-            You&apos;re subscribed to Trooba Flow Insights. Check your inbox.
+            {doneCopy}
           </p>
         ) : (
           <form className="nl-bar__form" onSubmit={onSubmit}>

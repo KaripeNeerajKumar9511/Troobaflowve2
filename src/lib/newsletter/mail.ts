@@ -86,7 +86,6 @@ function commonAttachments() {
     inlineFile("icon-cube", "image/png", "icons", "icon-cube.png"),
     inlineFile("icon-cal", "image/png", "icons", "icon-cal.png"),
     inlineFile("icon-mail", "image/png", "icons", "icon-mail.png"),
-    inlineFile("icon-sprout", "image/png", "icons", "icon-sprout.png"),
     inlineFile("social-linkedin", "image/png", "icons", "social-linkedin.png"),
     inlineFile("social-instagram", "image/png", "icons", "social-instagram.png"),
     inlineFile("social-x", "image/png", "icons", "social-x.png"),

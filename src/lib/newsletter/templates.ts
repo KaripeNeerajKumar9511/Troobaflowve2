@@ -242,9 +242,6 @@ export function unsubscribeEmailHtml(resubUrl: string): string {
   </table>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px;background:${MINT};border-radius:14px">
     <tr>
-      <td width="56" valign="middle" style="padding:16px 0 16px 16px">
-        ${cid("icon-sprout", "", 40)}
-      </td>
       <td style="padding:16px 8px;font-family:'DM Sans',Arial,sans-serif">
         <p style="margin:0 0 4px;font-size:15px;font-weight:700;color:${INK}">Changed your mind?</p>
         <p style="margin:0;font-size:13px;line-height:1.5;color:${MUTED}">You can subscribe again anytime and continue receiving valuable insights to help build a smarter, more efficient factory.</p>

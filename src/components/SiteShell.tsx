@@ -1,6 +1,7 @@
 import { getSite } from "@/lib/cms";
 import { IconSprite } from "./IconSprite";
 import { SiteBehaviors } from "./SiteBehaviors";
+import { NewsletterBar } from "./NewsletterBar";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader, type NavCurrent } from "./SiteHeader";
 
@@ -20,6 +21,7 @@ export async function SiteShell({ current = null, children }: SiteShellProps) {
       <IconSprite />
       {children}
       <SiteFooter site={site} />
+      <NewsletterBar />
       <SiteBehaviors />
     </>
   );

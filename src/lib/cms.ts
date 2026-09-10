@@ -570,3 +570,37 @@ export async function persistLead(
     );
   }
 }
+
+export type NewsletterPersistResult = {
+  already_subscribed?: boolean;
+  already_unsubscribed?: boolean;
+  email?: string;
+  name?: string;
+  status?: string;
+};
+
+export async function persistNewsletter(
+  action: "subscribe" | "unsubscribe",
+  body: Record<string, string>,
+): Promise<NewsletterPersistResult> {
+  const res = await fetch(`${API}/api/public/newsletter/${action}/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const text = await res.text();
+  let data: NewsletterPersistResult = {};
+  if (text) {
+    try {
+      data = JSON.parse(text) as NewsletterPersistResult;
+    } catch {
+      data = {};
+    }
+  }
+  if (!res.ok) {
+    throw new Error(
+      `Could not save the newsletter ${action} (${res.status})${text ? `: ${text.slice(0, 180)}` : ""}`,
+    );
+  }
+  return data;
+}

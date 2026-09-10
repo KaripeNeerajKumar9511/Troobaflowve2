@@ -57,13 +57,50 @@ function getTransporter(cfg: SmtpConfig) {
   return cachedTransporter;
 }
 
-function logoAttachment() {
+function asset(...parts: string[]): string {
+  return path.join(process.cwd(), "public", "assets", "newsletter", ...parts);
+}
+
+function inlineFile(cid: string, contentType: string, ...parts: string[]) {
   return {
-    filename: "trooba-flow-logo.png",
-    content: readFileSync(path.join(process.cwd(), "public", "Trooba_Transperentlogo.png")),
-    cid: "nl-logo",
+    filename: parts[parts.length - 1],
+    content: readFileSync(asset(...parts)),
+    cid,
     contentDisposition: "inline" as const,
-    contentType: "image/png",
+    contentType,
+  };
+}
+
+function commonAttachments() {
+  return [
+    {
+      filename: "trooba-flow-logo.png",
+      content: readFileSync(path.join(process.cwd(), "public", "Trooba_Transperentlogo.png")),
+      cid: "nl-logo",
+      contentDisposition: "inline" as const,
+      contentType: "image/png",
+    },
+    inlineFile("icon-chart", "image/png", "icons", "icon-chart.png"),
+    inlineFile("icon-doc", "image/png", "icons", "icon-doc.png"),
+    inlineFile("icon-bulb", "image/png", "icons", "icon-bulb.png"),
+    inlineFile("icon-cube", "image/png", "icons", "icon-cube.png"),
+    inlineFile("icon-cal", "image/png", "icons", "icon-cal.png"),
+    inlineFile("icon-mail", "image/png", "icons", "icon-mail.png"),
+    inlineFile("icon-sprout", "image/png", "icons", "icon-sprout.png"),
+    inlineFile("social-linkedin", "image/png", "icons", "social-linkedin.png"),
+    inlineFile("social-instagram", "image/png", "icons", "social-instagram.png"),
+    inlineFile("social-x", "image/png", "icons", "social-x.png"),
+  ];
+}
+
+function heroAttachment(kind: "welcome" | "unsubscribed") {
+  const file = kind === "welcome" ? "welcome.jpg" : "unsubscribed.jpg";
+  return {
+    filename: file,
+    content: readFileSync(asset(file)),
+    cid: "nl-hero",
+    contentDisposition: "inline" as const,
+    contentType: "image/jpeg",
   };
 }
 
@@ -79,7 +116,7 @@ export async function sendWelcomeEmail(
     subject: "Congratulations — you're subscribed to Trooba Flow Insights",
     text: `You're subscribed to Trooba Flow Insights. Thank you for joining. Unsubscribe: ${unsubscribeUrl(email)}`,
     html,
-    attachments: [logoAttachment()],
+    attachments: [...commonAttachments(), heroAttachment("welcome")],
   });
   return { messageId: String(info.messageId || "") };
 }
@@ -95,7 +132,7 @@ export async function sendUnsubscribeEmail(
     subject: "You've been unsubscribed from Trooba Flow Insights",
     text: `Your email has been removed from Trooba Flow Insights. Subscribe again: ${subscribeUrl()}`,
     html,
-    attachments: [logoAttachment()],
+    attachments: [...commonAttachments(), heroAttachment("unsubscribed")],
   });
   return { messageId: String(info.messageId || "") };
 }

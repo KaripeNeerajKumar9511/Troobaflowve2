@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { persistNewsletter } from "@/lib/cms";
 import { sendUnsubscribeEmail } from "@/lib/newsletter/mail";
 import { readNewsletterToken } from "@/lib/newsletter/token";
@@ -24,7 +24,13 @@ export async function POST(request: Request) {
   try {
     const saved = await persistNewsletter("unsubscribe", { email });
     if (!saved.already_unsubscribed) {
-      await sendUnsubscribeEmail(email);
+      after(async () => {
+        try {
+          await sendUnsubscribeEmail(email);
+        } catch (err) {
+          console.error("[newsletter] unsubscribe mail failed:", err);
+        }
+      });
     }
     return NextResponse.json({ success: true, already: Boolean(saved.already_unsubscribed) });
   } catch (err) {

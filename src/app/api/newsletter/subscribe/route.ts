@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { persistNewsletter } from "@/lib/cms";
 import { sendWelcomeEmail } from "@/lib/newsletter/mail";
 
@@ -32,18 +32,21 @@ export async function POST(request: Request) {
 
   try {
     const saved = await persistNewsletter("subscribe", { name, email });
-    let messageId = "";
     if (!saved.already_subscribed) {
-      const sent = await sendWelcomeEmail(name, email);
-      messageId = sent.messageId;
-      if (messageId) {
-        await persistNewsletter("subscribe", { name, email, message_id: messageId });
-      }
+      after(async () => {
+        try {
+          const sent = await sendWelcomeEmail(name, email);
+          if (sent.messageId) {
+            await persistNewsletter("subscribe", { name, email, message_id: sent.messageId });
+          }
+        } catch (err) {
+          console.error("[newsletter] welcome mail failed:", err);
+        }
+      });
     }
     return NextResponse.json({
       success: true,
       already: Boolean(saved.already_subscribed),
-      messageId,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to subscribe";

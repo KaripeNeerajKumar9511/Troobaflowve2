@@ -10,11 +10,13 @@ function secret(): string {
 }
 
 export function siteOrigin(): string {
-  return (
+  const raw = (
     process.env.NEXT_PUBLIC_SITE_URL ||
     process.env.FRONTEND_ORIGIN ||
-    "http://localhost:3000"
+    "https://trooba.com"
   ).replace(/\/$/, "");
+  if (/localhost|127\.0\.0\.1/i.test(raw)) return "https://trooba.com";
+  return raw;
 }
 
 export function newsletterToken(email: string): string {

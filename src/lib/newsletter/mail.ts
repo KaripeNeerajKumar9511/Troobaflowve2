@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+import path from "path";
 import nodemailer from "nodemailer";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import { unsubscribeEmailHtml, welcomeEmailHtml } from "./templates";
@@ -55,6 +57,16 @@ function getTransporter(cfg: SmtpConfig) {
   return cachedTransporter;
 }
 
+function logoAttachment() {
+  return {
+    filename: "trooba-flow-logo.png",
+    content: readFileSync(path.join(process.cwd(), "public", "Trooba_Transperentlogo.png")),
+    cid: "nl-logo",
+    contentDisposition: "inline" as const,
+    contentType: "image/png",
+  };
+}
+
 export async function sendWelcomeEmail(
   name: string,
   email: string,
@@ -67,6 +79,7 @@ export async function sendWelcomeEmail(
     subject: "Congratulations — you're subscribed to Trooba Flow Insights",
     text: `You're subscribed to Trooba Flow Insights. Thank you for joining. Unsubscribe: ${unsubscribeUrl(email)}`,
     html,
+    attachments: [logoAttachment()],
   });
   return { messageId: String(info.messageId || "") };
 }
@@ -82,6 +95,7 @@ export async function sendUnsubscribeEmail(
     subject: "You've been unsubscribed from Trooba Flow Insights",
     text: `Your email has been removed from Trooba Flow Insights. Subscribe again: ${subscribeUrl()}`,
     html,
+    attachments: [logoAttachment()],
   });
   return { messageId: String(info.messageId || "") };
 }

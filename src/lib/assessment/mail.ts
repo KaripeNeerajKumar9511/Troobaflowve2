@@ -101,11 +101,11 @@ function row(label: string, value: string, alt: boolean): string {
   const htmlValue = value.includes("\n")
     ? escapeHtml(value).replace(/\n/g, "<br>")
     : escapeHtml(value);
-  return `<tr style="background:${bg}"><td style="padding:10px 12px;font-family:Arial,sans-serif;font-size:13px;color:#667085;width:38%;vertical-align:top">${escapeHtml(label)}</td><td style="padding:10px 12px;font-family:Arial,sans-serif;font-size:13px;color:#101828">${htmlValue}</td></tr>`;
+  return `<tr style="background:${bg}"><td style="padding:12px 16px;border-bottom:1px solid #e4e7ec;font-family:Arial,Helvetica,sans-serif;vertical-align:top"><div style="margin:0 0 4px;font-size:12px;line-height:16px;color:#667085">${escapeHtml(label)}</div><div style="margin:0;font-size:14px;line-height:20px;color:#101828;word-break:break-word">${htmlValue}</div></td></tr>`;
 }
 
 function wrapSection(title: string, rowsHtml: string): string {
-  return `<h2 style="font-family:Arial,sans-serif;font-size:16px;color:#101828;margin:28px 0 10px">${escapeHtml(title)}</h2><table style="width:100%;border-collapse:collapse;border:1px solid #e4e7ec">${rowsHtml}</table>`;
+  return `<h2 style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;color:#101828;margin:24px 0 8px">${escapeHtml(title)}</h2><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;border:1px solid #e4e7ec">${rowsHtml}</table>`;
 }
 
 function sectionsHtml(blocks: SummarySection[]): string {
@@ -120,10 +120,10 @@ function sectionsHtml(blocks: SummarySection[]): string {
 }
 
 function envelopeHtml(kicker: string, title: string, blocks: SummarySection[]): string {
-  return `<!DOCTYPE html><html><body style="margin:0;padding:24px;background:#f9fafb">
-  <div style="max-width:720px;margin:0 auto;background:#fff;border:1px solid #e4e7ec;border-radius:8px;padding:28px">
-    <p style="font-family:Arial,sans-serif;font-size:12px;color:#667085;margin:0 0 8px">${escapeHtml(kicker)}</p>
-    <h1 style="font-family:Arial,sans-serif;font-size:22px;color:#101828;margin:0 0 8px">${escapeHtml(title)}</h1>
+  return `<!DOCTYPE html><html><body style="margin:0;padding:16px;background:#f9fafb">
+  <div style="max-width:640px;margin:0 auto;background:#fff;border:1px solid #e4e7ec;border-radius:8px;padding:20px">
+    <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;color:#667085;margin:0 0 8px">${escapeHtml(kicker)}</p>
+    <h1 style="font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:28px;color:#101828;margin:0">${escapeHtml(title)}</h1>
     ${sectionsHtml(blocks)}
   </div></body></html>`;
 }

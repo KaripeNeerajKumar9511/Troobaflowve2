@@ -1371,7 +1371,7 @@ html:not(.js) .tabs__body > [data-tab-panel][hidden] {
 .btn[disabled] { opacity: 0.6; cursor: default; }
 
 /* Cloudflare check. Opens over the page only after a valid submit click.
-   The card hugs the compact widget (150×140) and does not restyle the form. */
+   The card hugs the standard widget (300×65) and does not restyle the form. */
 .turnstile-gate {
   position: fixed;
   inset: 0;
@@ -1387,22 +1387,22 @@ html:not(.js) .tabs__body > [data-tab-panel][hidden] {
   gap: var(--space-2);
   width: max-content;
   max-width: calc(100vw - var(--space-8));
-  padding: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-2);
   background: var(--surface-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-surface);
   box-shadow: var(--shadow-overlay);
 }
 .turnstile-gate__widget {
-  width: 150px;
-  height: 140px;
+  width: 300px;
+  height: 65px;
 }
 .turnstile-gate__card .err { margin: 0; text-align: center; max-width: 16rem; }
 .turnstile-gate__cancel {
   border: 0;
   background: none;
-  padding: 0;
-  min-height: var(--ui-target-min);
+  padding: var(--space-2) var(--space-3);
+  min-height: 36px;
   font-size: var(--fs-sm);
   color: var(--text-tertiary);
   cursor: pointer;

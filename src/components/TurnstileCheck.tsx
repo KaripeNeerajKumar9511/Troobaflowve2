@@ -8,7 +8,7 @@ type TurnstileApi = {
     el: HTMLElement,
     opts: {
       sitekey: string;
-      size: "compact";
+      size: "normal";
       appearance: "always";
       theme: "light" | "dark" | "auto";
       callback: (token: string) => void;
@@ -122,7 +122,7 @@ export function TurnstileCheck({
         if (cancelled || !widgetRef.current || !window.turnstile) return;
         widgetId = window.turnstile.render(widgetRef.current, {
           sitekey,
-          size: "compact",
+          size: "normal",
           appearance: "always",
           theme: "light",
           callback: (token) => {

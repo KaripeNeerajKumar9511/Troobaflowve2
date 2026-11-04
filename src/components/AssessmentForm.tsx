@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FormSuccess } from "@/components/FormSuccess";
 import { PortalSelect } from "@/components/PortalSelect";
+import { TurnstileCheck } from "@/components/TurnstileCheck";
 import type { AssessmentFormState, AssessmentSource } from "@/lib/assessment/types";
 import { emptyAssessmentForm, STEP_TITLES, TOTAL_STEPS } from "@/lib/assessment/types";
 import {
@@ -96,6 +97,7 @@ export function AssessmentForm({
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [verifyOpen, setVerifyOpen] = useState(false);
 
   const setField = <K extends keyof AssessmentFormState>(
     key: K,
@@ -149,19 +151,15 @@ export function AssessmentForm({
     setStep((s) => Math.max(1, s - 1));
   };
 
-  const submit = async () => {
-    const stepErrors = validateStep(TOTAL_STEPS, form);
-    if (Object.keys(stepErrors).length) {
-      setErrors(stepErrors);
-      return;
-    }
+  const submit = async (token: string) => {
+    setVerifyOpen(false);
     setSubmitting(true);
     setFormError("");
     try {
       const res = await fetch(API_BY_SOURCE[source], {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken: token }),
       });
       const data = (await res.json().catch(() => null)) as
         | { success?: boolean; error?: string }
@@ -182,8 +180,18 @@ export function AssessmentForm({
 
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (step < TOTAL_STEPS) goNext();
-    else void submit();
+    if (submitting || verifyOpen) return;
+    if (step < TOTAL_STEPS) {
+      goNext();
+      return;
+    }
+    const stepErrors = validateStep(TOTAL_STEPS, form);
+    if (Object.keys(stepErrors).length) {
+      setErrors(stepErrors);
+      return;
+    }
+    setFormError("");
+    setVerifyOpen(true);
   };
 
   if (done) {
@@ -526,6 +534,13 @@ export function AssessmentForm({
           <a href="/privacy">privacy notice</a>.
         </p>
       </div>
+      <TurnstileCheck
+        open={verifyOpen}
+        onClose={() => setVerifyOpen(false)}
+        onVerified={(token) => {
+          void submit(token);
+        }}
+      />
     </div>
   );
 }

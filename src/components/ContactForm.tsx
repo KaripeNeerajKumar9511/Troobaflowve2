@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FormSuccess } from "@/components/FormSuccess";
+import { TurnstileCheck } from "@/components/TurnstileCheck";
 
 type ContactFields = {
   name: string;
@@ -43,6 +44,7 @@ export function ContactForm({ copy }: { copy?: ContactCopy }) {
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [verifyOpen, setVerifyOpen] = useState(false);
 
   const setField = (key: keyof ContactFields, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -67,20 +69,27 @@ export function ContactForm({ copy }: { copy?: ContactCopy }) {
     return next;
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting || verifyOpen) return;
     const next = validate();
     if (Object.keys(next).length) {
       setErrors(next);
       return;
     }
+    setFormError("");
+    setVerifyOpen(true);
+  };
+
+  const submitVerified = async (token: string) => {
+    setVerifyOpen(false);
     setSubmitting(true);
     setFormError("");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken: token }),
       });
       const data = (await res.json().catch(() => null)) as
         | { success?: boolean; error?: string }
@@ -223,6 +232,13 @@ export function ContactForm({ copy }: { copy?: ContactCopy }) {
         </button>
       </form>
       <FormFoot copy={copy} />
+      <TurnstileCheck
+        open={verifyOpen}
+        onClose={() => setVerifyOpen(false)}
+        onVerified={(token) => {
+          void submitVerified(token);
+        }}
+      />
     </div>
   );
 }

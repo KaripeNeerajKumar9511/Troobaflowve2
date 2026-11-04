@@ -6,6 +6,7 @@ import {
   validateFullPayload,
 } from "@/lib/assessment/validate";
 import { persistLead } from "@/lib/cms";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export async function handleAssessmentPost(
   request: Request,
@@ -33,6 +34,20 @@ export async function handleAssessmentPost(
   if (validationError) {
     return NextResponse.json(
       { success: false, error: validationError },
+      { status: 400 },
+    );
+  }
+
+  const turnstileOk = await verifyTurnstile(
+    String((raw as Record<string, unknown>).turnstileToken ?? "").trim(),
+    request,
+  );
+  if (!turnstileOk) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Please complete the verification and try again.",
+      },
       { status: 400 },
     );
   }

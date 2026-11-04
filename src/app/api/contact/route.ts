@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendContactEmail } from "@/lib/assessment/mail";
 import { persistLead } from "@/lib/cms";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 
@@ -54,6 +55,17 @@ export async function POST(request: Request) {
   if (!form.problem) {
     return NextResponse.json(
       { success: false, error: "problem is required" },
+      { status: 400 },
+    );
+  }
+
+  const turnstileOk = await verifyTurnstile(
+    String(body.turnstileToken ?? "").trim(),
+    request,
+  );
+  if (!turnstileOk) {
+    return NextResponse.json(
+      { success: false, error: "Please complete the verification and try again." },
       { status: 400 },
     );
   }
